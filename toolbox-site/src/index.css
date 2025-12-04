@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  body {
+    @apply m-0 font-body text-body text-neutral-dark bg-neutral-light;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1 {
+    @apply text-h1 font-heading font-bold leading-heading text-neutral-dark;
+  }
+
+  h2 {
+    @apply text-h2 font-heading font-semibold leading-heading text-neutral-dark;
+  }
+
+  h3 {
+    @apply text-h3 font-heading font-semibold leading-heading text-neutral-dark;
+  }
+
+  p {
+    @apply text-body leading-body text-neutral-dark;
+  }
+}
+
+@layer components {
+  .container-main {
+    @apply max-w-[1200px] mx-auto px-6 md:px-10;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 bg-accent text-white rounded-lg font-medium transition-all duration-200 hover:bg-opacity-90 hover:scale-105 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-primary text-white rounded-lg font-medium transition-all duration-200 hover:bg-opacity-90 hover:scale-105 active:scale-95;
+  }
+
+  .btn-tertiary {
+    @apply px-4 py-2 bg-secondary-gray text-neutral-dark rounded-lg font-medium transition-all duration-200 hover:bg-opacity-80 hover:scale-105 active:scale-95;
+  }
+
+  .card {
+    @apply bg-white rounded-card p-6 shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+}
