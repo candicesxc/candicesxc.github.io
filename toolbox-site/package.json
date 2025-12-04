@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:deploy": "vite build && mkdir -p /workspace/homepage/test && cp -r dist/* /workspace/homepage/test/",
     "preview": "vite preview"
   },
   "dependencies": {
