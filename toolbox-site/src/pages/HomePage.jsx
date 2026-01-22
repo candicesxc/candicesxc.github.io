@@ -82,6 +82,20 @@ const experience = [
 function HomePage() {
   const [selectedProject, setSelectedProject] = useState(null)
 
+  const handleNextProject = () => {
+    if (!selectedProject) return
+    const currentIndex = projects.findIndex(p => p.id === selectedProject.id)
+    const nextIndex = (currentIndex + 1) % projects.length
+    setSelectedProject(projects[nextIndex])
+  }
+
+  const handlePrevProject = () => {
+    if (!selectedProject) return
+    const currentIndex = projects.findIndex(p => p.id === selectedProject.id)
+    const prevIndex = (currentIndex - 1 + projects.length) % projects.length
+    setSelectedProject(projects[prevIndex])
+  }
+
   return (
     <div className="min-h-screen">
       <Cursor />
@@ -90,7 +104,7 @@ function HomePage() {
       {/* Hero Section */}
       <section id="hero" className="min-h-screen flex items-center bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(193,18,31,0.1),transparent_40%)]"></div>
-        <div className="container-main pt-32 pb-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
+        <div className="container-main py-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
           <div className="flex-1 text-left">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -245,6 +259,8 @@ function HomePage() {
         project={selectedProject}
         isOpen={!!selectedProject}
         onClose={() => setSelectedProject(null)}
+        onNext={handleNextProject}
+        onPrev={handlePrevProject}
       />
     </div>
   )

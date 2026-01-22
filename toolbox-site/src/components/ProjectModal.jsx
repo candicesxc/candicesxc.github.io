@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 
-function ProjectModal({ project, isOpen, onClose }) {
+function ProjectModal({ project, isOpen, onClose, onNext, onPrev }) {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   useEffect(() => {
@@ -16,14 +16,16 @@ function ProjectModal({ project, isOpen, onClose }) {
   }, [isOpen])
 
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose()
-      }
+    const handleKeyDown = (e) => {
+      if (!isOpen) return
+      
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowRight' && onNext) onNext()
+      if (e.key === 'ArrowLeft' && onPrev) onPrev()
     }
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
-  }, [isOpen, onClose])
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose, onNext, onPrev])
 
   if (!project) return null
 
@@ -41,13 +43,30 @@ function ProjectModal({ project, isOpen, onClose }) {
           >
             {/* Modal */}
             <motion.div
-              className="bg-white rounded-large max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-surface/20"
+              className="bg-white rounded-large max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-surface/20 relative"
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
             >
+              
+              {/* Navigation Buttons (Desktop outside content, Mobile fixed/floating) */}
+              <button 
+                onClick={(e) => { e.stopPropagation(); onPrev(); }}
+                className="hidden md:flex absolute -left-16 top-1/2 -translate-y-1/2 z-50 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all hover:scale-110 border border-white/20 backdrop-blur-sm"
+                aria-label="Previous project"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
+              <button 
+                onClick={(e) => { e.stopPropagation(); onNext(); }}
+                className="hidden md:flex absolute -right-16 top-1/2 -translate-y-1/2 z-50 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all hover:scale-110 border border-white/20 backdrop-blur-sm"
+                aria-label="Next project"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+
               <div className="relative">
                 {/* Close button */}
                 <button
@@ -60,25 +79,65 @@ function ProjectModal({ project, isOpen, onClose }) {
                   </svg>
                 </button>
 
-                {/* Image */}
-                <div className="relative w-full aspect-video md:h-80 bg-gray-100 overflow-hidden shadow-[0_0_20px_rgba(0,48,73,0.3)] rounded-t-large">
-                  {!imageLoaded && (
-                    <div className="absolute inset-0 bg-gray-200 animate-pulse" />
-                  )}
-                  <img
-                    src={project.image || `/project-placeholder.svg`}
-                    alt={project.title}
-                    className={`w-full h-full object-cover transition-opacity duration-300 ${
-                      imageLoaded ? 'opacity-100' : 'opacity-0'
-                    }`}
-                    onLoad={() => setImageLoaded(true)}
-                    loading="lazy"
-                  />
+                {/* Mobile Navigation Arrows (Inside image area) */}
+                <div className="md:hidden absolute inset-x-0 top-[25%] flex justify-between px-2 z-10 pointer-events-none">
+                    <button 
+                        onClick={(e) => { e.stopPropagation(); onPrev(); }}
+                        className="pointer-events-auto p-2 bg-white/70 rounded-full shadow-sm text-text"
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <button 
+                        onClick={(e) => { e.stopPropagation(); onNext(); }}
+                        className="pointer-events-auto p-2 bg-white/70 rounded-full shadow-sm text-text"
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
                 </div>
+
+                {/* Image (Clickable) */}
+                <a 
+                  href={project.liveLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block cursor-pointer group"
+                  title="Visit live site"
+                >
+                    <div className="relative w-full aspect-video md:h-80 bg-gray-100 overflow-hidden shadow-[0_0_20px_rgba(0,48,73,0.3)] rounded-t-large">
+                    {!imageLoaded && (
+                        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+                    )}
+                    <img
+                        src={project.image || `/project-placeholder.svg`}
+                        alt={project.title}
+                        className={`w-full h-full object-cover transition-opacity duration-300 ${
+                        imageLoaded ? 'opacity-100' : 'opacity-0'
+                        } group-hover:scale-105 transition-transform duration-500`}
+                        onLoad={() => setImageLoaded(true)}
+                        loading="lazy"
+                    />
+                    {/* Hover overlay hint */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                        <span className="opacity-0 group-hover:opacity-100 bg-white/90 text-text px-4 py-2 rounded-full font-medium shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all">
+                            Visit Live Site
+                        </span>
+                    </div>
+                    </div>
+                </a>
 
                 {/* Content */}
                 <div className="p-6 md:p-10">
-                  <h2 className="text-2xl md:text-h2 font-bold mb-2 text-text">{project.title}</h2>
+                  <a 
+                    href={project.liveLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-block hover:text-primary transition-colors group"
+                  >
+                    <h2 className="text-2xl md:text-h2 font-bold mb-2 text-text group-hover:text-primary transition-colors flex items-center gap-2">
+                        {project.title}
+                        <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                    </h2>
+                  </a>
                   <p className="text-base md:text-lg text-text/70 mb-4 md:mb-6 font-medium">{project.oneLiner}</p>
                   
                   <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
