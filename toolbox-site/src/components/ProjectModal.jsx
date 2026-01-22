@@ -33,7 +33,7 @@ function ProjectModal({ project, isOpen, onClose }) {
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-surface/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -41,10 +41,10 @@ function ProjectModal({ project, isOpen, onClose }) {
           >
             {/* Modal */}
             <motion.div
-              className="bg-white rounded-large max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-large max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-surface/20"
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -52,7 +52,7 @@ function ProjectModal({ project, isOpen, onClose }) {
                 {/* Close button */}
                 <button
                   onClick={onClose}
-                  className="absolute top-6 right-6 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md hover:bg-secondary-gray text-neutral-dark transition-colors"
+                  className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/80 backdrop-blur shadow-md hover:bg-white text-text transition-colors"
                   aria-label="Close modal"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,12 +61,12 @@ function ProjectModal({ project, isOpen, onClose }) {
                 </button>
 
                 {/* Image */}
-                <div className="relative w-full h-64 md:h-96 bg-secondary-clay overflow-hidden">
+                <div className="relative w-full h-64 md:h-80 bg-gray-100 overflow-hidden">
                   {!imageLoaded && (
-                    <div className="absolute inset-0 bg-secondary-gray animate-pulse" />
+                    <div className="absolute inset-0 bg-gray-200 animate-pulse" />
                   )}
                   <img
-                    src={project.image || `${import.meta.env.BASE_URL}project-placeholder.svg`}
+                    src={project.image || `/project-placeholder.svg`}
                     alt={project.title}
                     className={`w-full h-full object-cover transition-opacity duration-300 ${
                       imageLoaded ? 'opacity-100' : 'opacity-0'
@@ -77,40 +77,50 @@ function ProjectModal({ project, isOpen, onClose }) {
                 </div>
 
                 {/* Content */}
-                <div className="p-8">
-                  <div className="text-sm text-primary font-medium mb-2">{project.category}</div>
-                  <h2 className="text-h2 mb-6">{project.title}</h2>
+                <div className="p-8 md:p-10">
+                  <h2 className="text-h2 font-bold mb-2 text-text">{project.title}</h2>
+                  <p className="text-lg text-text/70 mb-6 font-medium">{project.oneLiner}</p>
                   
-                  <div className="space-y-4 mb-6">
-                    <p className="text-body leading-body text-neutral-dark">
-                      {project.description}
-                    </p>
-                    <p className="text-body leading-body text-neutral-dark">
-                      {project.description2 || project.description}
-                    </p>
+                  <div className="space-y-4 mb-8">
+                    {project.fullDescription.split('\n\n').map((paragraph, idx) => (
+                         <p key={idx} className="text-body leading-body text-text/90 whitespace-pre-line">
+                            {paragraph}
+                         </p>
+                    ))}
                   </div>
 
-                  {/* Tech Stack */}
-                  {project.techStack && project.techStack.length > 0 && (
-                    <div className="mb-6">
-                      <h3 className="text-h3 mb-3">Tech Stack</h3>
+                  {/* Tags */}
+                  {project.tags && project.tags.length > 0 && (
+                    <div className="mb-8">
+                      <h3 className="text-sm uppercase tracking-wider font-bold text-text/60 mb-3">Technologies</h3>
                       <div className="flex flex-wrap gap-2">
-                        {project.techStack.map((tech, index) => (
+                        {project.tags.map((tag, index) => (
                           <span
                             key={index}
-                            className="px-3 py-1 bg-secondary-gray rounded-full text-sm text-neutral-dark font-medium"
+                            className="tag"
                           >
-                            {tech}
+                            {tag}
                           </span>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {/* Back button */}
-                  <button onClick={onClose} className="btn-secondary">
-                    Back to Projects
-                  </button>
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap gap-4 pt-4 border-t border-surface/10">
+                    {project.liveLink && (
+                        <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex items-center gap-2">
+                            Try the app live
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        </a>
+                    )}
+                    {project.repoLink && (
+                        <a href={project.repoLink} target="_blank" rel="noopener noreferrer" className="btn-tertiary inline-flex items-center gap-2">
+                            View GitHub Repo
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                        </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </motion.div>

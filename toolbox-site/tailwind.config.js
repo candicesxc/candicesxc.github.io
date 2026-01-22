@@ -7,15 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#8BA6A9',
-        accent: '#F4A261',
+        background: '#B7C3F3', // Soft periwinkle
+        surface: '#4F6272',    // Muted slate (Secondary/Containers)
+        primary: '#DD7596',    // Dusty rose (Accent 1 - Buttons/Links)
+        highlight: '#CF1259',  // Deep raspberry (Accent 2 - Highlight/Bold)
+        text: '#404E5C',       // Dark navy
         neutral: {
           light: '#F7F7F5',
           dark: '#333333',
-        },
-        secondary: {
-          gray: '#D0CBC5',
-          clay: '#E8DED2',
         },
       },
       fontFamily: {
