@@ -44,7 +44,7 @@ const experience = [
     role: "MBA",
     company: "Yale School of Management",
     link: "https://som.yale.edu/",
-    description: "2024 – 2026"
+    description: ""
   },
   {
     role: "Product Marketing Manager Intern",
@@ -68,13 +68,13 @@ const experience = [
     role: "Sr. Growth Marketing Strategist",
     company: "Attentive",
     link: "https://www.attentive.com/",
-    description: "Scaled through multiple roles from Intern to Senior Strategist over 3+ years."
+    description: ""
   },
   {
     role: "B.S. in Media, Culture, and Communication",
     company: "New York University",
     link: "https://www.nyu.edu/",
-    description: "2016 – 2020"
+    description: ""
   }
 ]
 
@@ -118,10 +118,10 @@ function HomePage() {
             <div className="w-full h-[400px] md:h-[500px] relative">
                <LogoBubbles />
             </div>
-             {/* Organizations - logos removed from list, just text if desired, or completely removed. 
-                 User request: "Don't have any company logos under the Organizations I've been part of because you are repeating the info in the bubbles." 
-                 So I will remove this section entirely as per request.
-             */}
+             {/* Organizations - Added back as requested */}
+             <div className="mt-4 w-full">
+                <h3 className="text-sm uppercase tracking-widest font-bold text-secondary mb-2 text-center">Organizations I've been part of</h3>
+              </div>
           </div>
         </div>
       </section>

@@ -35,7 +35,7 @@ function Navbar() {
           duration={500} 
           className="flex items-center cursor-pointer hover:scale-110 transition-transform duration-200"
         >
-          <img src="/favicon.png" alt="Logo" className="w-10 h-10" />
+          <img src="/favicon.png" alt="Logo" className="w-12 h-12" />
         </Link>
         
         <ul className="hidden md:flex items-center gap-8">
@@ -46,7 +46,7 @@ function Navbar() {
                 smooth={true}
                 duration={500}
                 offset={-100}
-                className="text-lg font-body font-medium text-text hover:text-primary cursor-pointer transition-colors relative group"
+                className="text-lg font-body font-bold text-text hover:text-primary cursor-pointer transition-colors relative group"
               >
                 {link.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
