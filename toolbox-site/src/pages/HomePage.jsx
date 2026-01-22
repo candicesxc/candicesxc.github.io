@@ -104,7 +104,7 @@ function HomePage() {
       {/* Hero Section */}
       <section id="hero" className="min-h-screen flex items-center bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(193,18,31,0.1),transparent_40%)]"></div>
-        <div className="container-main pt-48 pb-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
+        <div className="container-main pt-36 pb-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
           <div className="flex-1 text-left">
             <motion.div
               initial={{ opacity: 0, y: 40 }}

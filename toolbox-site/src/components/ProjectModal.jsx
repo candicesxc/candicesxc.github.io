@@ -166,23 +166,8 @@ function ProjectModal({ project, isOpen, onClose, onNext, onPrev }) {
                         )}
                     </div>
 
-                    {/* Mobile Navigation (Bottom) */}
-                    <div className="md:hidden flex justify-between items-center pt-6 mt-4 border-t border-surface/10">
-                        <button 
-                            onClick={(e) => { e.stopPropagation(); onPrev(); }}
-                            className="flex items-center gap-2 text-text hover:text-primary font-medium p-2"
-                        >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                            Previous Project
-                        </button>
-                        <button 
-                            onClick={(e) => { e.stopPropagation(); onNext(); }}
-                            className="flex items-center gap-2 text-text hover:text-primary font-medium p-2"
-                        >
-                            Next Project
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </button>
-                    </div>
+                    {/* Mobile Navigation (Bottom) - Removed as requested */}
+                    {/* <div className="md:hidden flex justify-between items-center pt-6 mt-4 border-t border-surface/10"> ... </div> */}
                 </div>
                 </motion.div>
             </div>
