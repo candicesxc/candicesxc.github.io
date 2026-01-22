@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import Navbar from '../components/Navbar'
 import LogoBubbles from '../components/LogoBubbles'
 import ProjectCard from '../components/ProjectCard'
 import ProjectModal from '../components/ProjectModal'
@@ -50,7 +51,7 @@ const experience = [
     role: "Product Marketing Manager Intern",
     company: "Microsoft",
     link: "https://www.microsoft.com/",
-    description: "Led AI agent security research and GTM positioning for Microsoft Security."
+    description: ""
   },
   {
     role: "Account Based Marketing Manager",
@@ -84,6 +85,7 @@ function HomePage() {
   return (
     <div className="min-h-screen">
       <Cursor />
+      <Navbar />
       
       {/* Hero Section */}
       <section id="hero" className="min-h-screen flex items-center bg-background relative overflow-hidden">
@@ -118,7 +120,7 @@ function HomePage() {
             <div className="w-full h-[400px] md:h-[500px] relative">
                <LogoBubbles />
             </div>
-             {/* Organizations - Added back as requested */}
+             {/* Organizations */}
              <div className="mt-4 w-full">
                 <h3 className="text-sm uppercase tracking-widest font-bold text-secondary mb-2 text-center">Organizations I've been part of</h3>
               </div>
@@ -136,7 +138,7 @@ function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-5xl font-bold mb-16 text-center text-primary">Selected Projects</h2>
+            <h2 className="text-5xl font-bold mb-12 text-left text-primary">Selected Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {projects.map((project, idx) => (
                 <div key={project.id} style={{ transitionDelay: `${idx * 100}ms` }}>
@@ -162,7 +164,7 @@ function HomePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-4xl font-bold mb-12 text-text border-b-4 border-accent inline-block pb-2">Experience</h2>
+              <h2 className="text-5xl font-bold mb-12 text-left text-primary">Experience</h2>
               <div className="space-y-12 relative border-l-4 border-secondary/30 pl-10 ml-4">
                 {experience.map((exp, idx) => (
                   <div key={idx} className="relative group">
@@ -191,7 +193,7 @@ function HomePage() {
               transition={{ duration: 0.6 }}
               className="flex flex-col items-center justify-center sticky top-24"
             >
-              <div className="w-full max-w-md aspect-[9/16] relative rotate-2 hover:rotate-0 transition-transform duration-500">
+              <div className="w-full max-w-xs aspect-[9/16] relative rotate-2 hover:rotate-0 transition-transform duration-500">
                  <VideoPlayer />
               </div>
               <p className="text-center mt-8 font-heading text-3xl text-accent rotate-[-2deg]">the fun side of me 💃</p>
@@ -201,19 +203,19 @@ function HomePage() {
       </section>
 
       {/* Contact & Footer */}
-      <section id="contact" className="py-16 bg-primary text-white relative">
-        <div className="container-main text-center relative z-10">
+      <section id="contact" className="py-24 bg-primary text-white relative">
+        <div className="container-main text-left relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-4xl font-bold mb-6 text-white">Let's Connect</h2>
-            <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-2xl mx-auto font-light">
+            <h2 className="text-5xl font-bold mb-12 text-left text-white">Let's Connect</h2>
+            <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-2xl font-light">
               I’m currently seeking post-MBA roles in tech GTM that blend strategy with creative execution. I’m always happy to chat about Yale, "vibe coding," or potential collaborations—feel free to reach out!
             </p>
-            <div className="flex justify-center gap-6">
+            <div className="flex gap-6">
               <a href="https://www.linkedin.com/in/candiceshen/" target="_blank" rel="noopener noreferrer" className="p-4 bg-white rounded-full shadow-xl hover:scale-110 transition-transform text-[#0077b5] group">
                 <svg className="w-8 h-8 group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
               </a>
