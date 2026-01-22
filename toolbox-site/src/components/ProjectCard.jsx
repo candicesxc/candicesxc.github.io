@@ -6,17 +6,17 @@ function ProjectCard({ project, onClick }) {
 
   return (
     <motion.div
-      className="card cursor-pointer overflow-hidden"
+      className="card cursor-pointer overflow-hidden h-full flex flex-col"
       onClick={onClick}
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
     >
-      <div className="relative w-full h-48 bg-secondary-clay rounded-t-card overflow-hidden mb-4">
+      <div className="relative w-full h-48 bg-gray-100 overflow-hidden mb-4 rounded-lg border border-surface/10">
         {!imageLoaded && (
-          <div className="absolute inset-0 bg-secondary-gray animate-pulse" />
+          <div className="absolute inset-0 bg-gray-200 animate-pulse" />
         )}
         <img
-          src={project.image || `${import.meta.env.BASE_URL}project-placeholder.svg`}
+          src={project.image || `/project-placeholder.svg`}
           alt={project.title}
           className={`w-full h-full object-cover transition-opacity duration-300 ${
             imageLoaded ? 'opacity-100' : 'opacity-0'
@@ -25,11 +25,10 @@ function ProjectCard({ project, onClick }) {
           loading="lazy"
         />
       </div>
-      <div className="px-2">
-        <div className="text-sm text-primary font-medium mb-2">{project.category}</div>
-        <h3 className="text-h3 mb-3">{project.title}</h3>
-        <p className="text-body text-neutral-dark leading-body line-clamp-3">
-          {project.description}
+      <div className="flex-1 flex flex-col">
+        <h3 className="text-h3 font-bold mb-2 text-text">{project.title}</h3>
+        <p className="text-body text-text/80 leading-body line-clamp-3">
+          {project.oneLiner}
         </p>
       </div>
     </motion.div>
