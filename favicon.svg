@@ -1,27 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
   <!-- Stick -->
-  <rect x="46" y="80" width="8" height="20" rx="2" fill="#fdf0d5" stroke="#780000" stroke-width="1" />
+  <rect x="45" y="50" width="10" height="45" rx="5" fill="#fdf0d5" stroke="#780000" stroke-width="2" />
   
-  <!-- Candy Wrapper/Body Shadow -->
-  <circle cx="50" cy="45" r="35" fill="#780000" opacity="0.1" />
+  <!-- Lollipop Head Shadow -->
+  <circle cx="50" cy="40" r="32" fill="#780000" opacity="0.2" />
   
-  <!-- Main Candy Circle -->
-  <circle cx="50" cy="45" r="35" fill="#c1121f" />
+  <!-- Lollipop Head Main -->
+  <circle cx="50" cy="40" r="32" fill="#c1121f" stroke="#780000" stroke-width="2" />
   
-  <!-- Swirl Pattern -->
-  <path d="M50 45 
+  <!-- Swirl -->
+  <path d="M50 40 
            m 0 0
-           l 0 -35
-           a 35 35 0 0 1 0 70
-           a 35 35 0 0 1 0 -70" 
+           l 0 -22
+           a 22 22 0 0 1 0 44
+           a 22 22 0 0 1 0 -44" 
         stroke="#fdf0d5" 
-        stroke-width="12" 
+        stroke-width="8" 
         stroke-linecap="round"
-        stroke-dasharray="20 15"
+        stroke-dasharray="15 10"
         opacity="0.9"
         fill="none" />
         
-  <!-- Cute Shine -->
-  <ellipse cx="35" cy="30" rx="6" ry="3" fill="#ffffff" opacity="0.6" transform="rotate(-45 35 30)" />
-  <circle cx="42" cy="25" r="2" fill="#ffffff" opacity="0.6" />
+  <!-- Cute Bow -->
+  <path d="M45 70 C 35 60, 35 80, 45 75 C 35 85, 35 65, 45 70 Z" fill="#780000" />
+  <path d="M55 70 C 65 60, 65 80, 55 75 C 65 85, 65 65, 55 70 Z" fill="#780000" />
+  <circle cx="50" cy="72" r="3" fill="#fdf0d5" />
+
+  <!-- Shine -->
+  <ellipse cx="35" cy="25" rx="6" ry="3" fill="#ffffff" opacity="0.7" transform="rotate(-45 35 25)" />
 </svg>
