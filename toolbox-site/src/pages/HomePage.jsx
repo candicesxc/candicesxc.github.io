@@ -90,14 +90,14 @@ function HomePage() {
       {/* Hero Section */}
       <section id="hero" className="min-h-screen flex items-center bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(193,18,31,0.1),transparent_40%)]"></div>
-        <div className="container-main py-20 flex flex-col md:flex-row items-center gap-12 relative z-10">
+        <div className="container-main py-24 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
           <div className="flex-1 text-left">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
             >
-              <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-tight tracking-tight">
+              <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold mb-6 md:mb-8 leading-tight tracking-tight">
                 Hey there, <br/>
                 I’m <motion.span 
                   className="text-primary relative inline-block"
@@ -111,12 +111,12 @@ function HomePage() {
                   }}
                 >
                   Candice
-                  <svg className="absolute w-full h-4 -bottom-2 left-0 text-secondary opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <svg className="absolute w-full h-3 md:h-4 -bottom-1 md:-bottom-2 left-0 text-secondary opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
                     <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
                   </svg>
                 </motion.span> 👋
               </h1>
-              <h2 className="text-3xl md:text-4xl text-secondary font-heading mb-8 leading-snug font-normal">
+              <h2 className="text-xl md:text-3xl lg:text-4xl text-secondary font-heading mb-6 md:mb-8 leading-snug font-normal">
                 I’m a <a href="https://som.yale.edu/" target="_blank" rel="noopener noreferrer" className="underline decoration-2 underline-offset-4 hover:text-primary transition-colors">Yale MBA</a> candidate and tech marketer using vibe coding to bring ideas to life.
               </h2>
 
@@ -127,20 +127,20 @@ function HomePage() {
             </motion.div>
           </div>
           <div className="flex-1 w-full flex flex-col items-center">
-            <div className="w-full h-[400px] md:h-[500px] relative">
+            <div className="w-full h-[300px] md:h-[500px] relative">
                <LogoBubbles />
             </div>
              {/* Organizations */}
              <div className="mt-4 w-full">
-                <h3 className="text-sm uppercase tracking-widest font-bold text-secondary mb-2 text-center">Organizations I've been part of</h3>
+                <h3 className="text-xs md:text-sm uppercase tracking-widest font-bold text-secondary mb-2 text-center">Organizations I've been part of</h3>
               </div>
           </div>
         </div>
       </section>
 
       {/* Selected Projects */}
-      <section id="projects" className="py-24 bg-white relative">
-         <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-background to-white"></div>
+      <section id="projects" className="py-20 md:py-24 bg-white relative">
+         <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background to-white"></div>
         <div className="container-main">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -148,8 +148,8 @@ function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-5xl font-bold mb-12 text-left text-primary">Selected Projects</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <h2 className="text-4xl md:text-5xl font-bold mb-10 md:mb-12 text-left text-primary">Selected Projects</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
               {projects.map((project, idx) => (
                 <div key={project.id} style={{ transitionDelay: `${idx * 100}ms` }}>
                   <ProjectCard
@@ -161,12 +161,15 @@ function HomePage() {
             </div>
           </motion.div>
         </div>
+        
+        {/* Gradient Transition to Experience */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-secondary/5 pointer-events-none"></div>
       </section>
 
       {/* Experience & Fun Side */}
-      <section id="experience" className="py-24 bg-secondary/5 relative overflow-hidden">
+      <section id="experience" className="py-20 md:py-24 bg-secondary/5 relative overflow-hidden">
         <div className="container-main relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-20">
             {/* Left Column: Experience */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -174,12 +177,12 @@ function HomePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-5xl font-bold mb-12 text-left text-text">Experience</h2>
-              <div className="space-y-12 relative border-l-4 border-secondary/30 pl-10 ml-4">
+              <h2 className="text-4xl md:text-5xl font-bold mb-10 md:mb-12 text-left text-text">Experience</h2>
+              <div className="space-y-10 md:space-y-12 relative border-l-4 border-secondary/30 pl-8 md:pl-10 ml-2 md:ml-4">
                 {experience.map((exp, idx) => (
                   <div key={idx} className="relative group">
-                    <div className="absolute -left-[54px] top-1 w-7 h-7 rounded-full bg-secondary border-4 border-background transition-transform group-hover:scale-125 duration-300"></div>
-                    <h3 className="text-2xl font-bold text-primary mb-1">
+                    <div className="absolute -left-[46px] md:-left-[54px] top-1 w-6 h-6 md:w-7 md:h-7 rounded-full bg-secondary border-4 border-background transition-transform group-hover:scale-125 duration-300"></div>
+                    <h3 className="text-xl md:text-2xl font-bold text-primary mb-1">
                         {exp.link ? (
                             <a href={exp.link} target="_blank" rel="noopener noreferrer" className="hover:underline decoration-2 underline-offset-2">
                                 {exp.company}
@@ -188,8 +191,8 @@ function HomePage() {
                             exp.company
                         )}
                     </h3>
-                    <p className="text-xl text-secondary font-medium mb-2">{exp.role}</p>
-                    {exp.description && <p className="text-text/80 text-lg leading-relaxed">{exp.description}</p>}
+                    <p className="text-lg md:text-xl text-secondary font-medium mb-2">{exp.role}</p>
+                    {exp.description && <p className="text-text/80 text-base md:text-lg leading-relaxed">{exp.description}</p>}
                   </div>
                 ))}
               </div>
@@ -201,19 +204,23 @@ function HomePage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="flex flex-col items-center justify-center sticky top-24"
+              className="flex flex-col items-center justify-center lg:sticky lg:top-24"
             >
               <div className="w-full max-w-xs aspect-[9/16] relative rotate-2 hover:rotate-0 transition-transform duration-500">
                  <VideoPlayer />
               </div>
-              <p className="text-center mt-8 font-heading text-3xl text-accent rotate-[-2deg]">the fun side of me 💃</p>
+              <p className="text-center mt-8 font-heading text-2xl md:text-3xl text-accent rotate-[-2deg]">the fun side of me 💃</p>
             </motion.div>
           </div>
         </div>
+        
+        {/* Gradient Transition to Contact */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-primary/10 pointer-events-none"></div>
       </section>
 
       {/* Contact & Footer */}
-      <section id="contact" className="py-24 bg-primary text-white relative">
+      <section id="contact" className="py-20 md:py-24 bg-primary text-white relative">
+        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background/10 to-transparent pointer-events-none"></div>
         <div className="container-main text-left relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -221,7 +228,7 @@ function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-5xl font-bold mb-12 text-left text-white">Let's Connect</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-10 md:mb-12 text-left text-white">Let's Connect</h2>
             <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-2xl font-light">
               I’m currently seeking post-MBA roles in tech GTM that blend strategy with creative execution. I’m always happy to chat about Yale, "vibe coding," or potential collaborations—feel free to reach out!
             </p>

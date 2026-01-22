@@ -1,4 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="color: #780000;">
-  <path d="M50 20 Q 60 5 80 20 Q 95 30 80 50 Q 95 70 80 80 Q 60 95 50 80 Q 40 95 20 80 Q 5 70 20 50 Q 5 30 20 20 Q 40 5 50 20 Z" fill="#780000" fill-opacity="0.2" />
-  <circle cx="50" cy="50" r="10" fill="#c1121f" stroke="none" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="candyGradient" x1="20" y1="20" x2="80" y2="80">
+      <stop offset="0%" stop-color="#c1121f" />
+      <stop offset="100%" stop-color="#780000" />
+    </linearGradient>
+  </defs>
+  <!-- Left Wrapper -->
+  <path d="M25 50 L5 35 Q 2 50 5 65 L25 50 Z" fill="#c1121f" opacity="0.9" />
+  <!-- Right Wrapper -->
+  <path d="M75 50 L95 35 Q 98 50 95 65 L75 50 Z" fill="#c1121f" opacity="0.9" />
+  <!-- Candy Body -->
+  <circle cx="50" cy="50" r="28" fill="url(#candyGradient)" stroke="#fdf0d5" stroke-width="2" />
+  <!-- Stripes/Swirls -->
+  <path d="M35 35 Q 50 20 65 35" stroke="#fdf0d5" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+  <path d="M35 65 Q 50 80 65 65" stroke="#fdf0d5" stroke-width="3" stroke-linecap="round" opacity="0.6" />
 </svg>
