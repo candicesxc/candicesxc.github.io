@@ -140,7 +140,9 @@ function HomePage() {
 
       {/* Selected Projects */}
       <section id="projects" className="py-20 md:py-24 bg-white relative">
-         <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background to-white"></div>
+         {/* Top Gradient: Background -> White */}
+         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background to-white pointer-events-none"></div>
+         
         <div className="container-main">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -161,13 +163,13 @@ function HomePage() {
             </div>
           </motion.div>
         </div>
-        
-        {/* Gradient Transition to Experience */}
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-secondary/5 pointer-events-none"></div>
       </section>
 
       {/* Experience & Fun Side */}
-      <section id="experience" className="py-20 md:py-24 bg-secondary/5 relative overflow-hidden">
+      <section id="experience" className="py-20 md:py-24 bg-[#F7F9FB] relative overflow-hidden">
+        {/* Top Gradient: White -> Experience BG (#F7F9FB) */}
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white to-[#F7F9FB] pointer-events-none"></div>
+
         <div className="container-main relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-20">
             {/* Left Column: Experience */}
@@ -213,15 +215,14 @@ function HomePage() {
             </motion.div>
           </div>
         </div>
-        
-        {/* Gradient Transition to Contact */}
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-primary/10 pointer-events-none"></div>
       </section>
 
       {/* Contact & Footer */}
       <section id="contact" className="py-20 md:py-24 bg-primary text-white relative">
-        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background/10 to-transparent pointer-events-none"></div>
-        <div className="container-main text-left relative z-10">
+        {/* Top Gradient: Experience BG -> Primary */}
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#F7F9FB] to-primary pointer-events-none"></div>
+        
+        <div className="container-main text-left relative z-10 pt-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
