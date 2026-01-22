@@ -164,7 +164,7 @@ function HomePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-5xl font-bold mb-12 text-left text-primary">Experience</h2>
+              <h2 className="text-5xl font-bold mb-12 text-left text-text">Experience</h2>
               <div className="space-y-12 relative border-l-4 border-secondary/30 pl-10 ml-4">
                 {experience.map((exp, idx) => (
                   <div key={idx} className="relative group">
