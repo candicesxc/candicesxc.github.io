@@ -99,18 +99,28 @@ function HomePage() {
             >
               <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-tight tracking-tight">
                 Hey there, <br/>
-                I’m <span className="text-primary relative inline-block">
+                I’m <motion.span 
+                  className="text-primary relative inline-block"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ 
+                    duration: 0.8, 
+                    delay: 0.2, 
+                    type: "spring", 
+                    stiffness: 100 
+                  }}
+                >
                   Candice
                   <svg className="absolute w-full h-4 -bottom-2 left-0 text-secondary opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
                     <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
                   </svg>
-                </span> 👋
+                </motion.span> 👋
               </h1>
               <h2 className="text-3xl md:text-4xl text-secondary font-heading mb-8 leading-snug font-normal">
                 I’m a <a href="https://som.yale.edu/" target="_blank" rel="noopener noreferrer" className="underline decoration-2 underline-offset-4 hover:text-primary transition-colors">Yale MBA</a> candidate and tech marketer using vibe coding to bring ideas to life.
               </h2>
 
-              <div className="mt-12 md:mt-16">
+              <div className="mt-8 md:mt-12">
                  {/* Empty div to push bubbles or just separation */}
               </div>
 
