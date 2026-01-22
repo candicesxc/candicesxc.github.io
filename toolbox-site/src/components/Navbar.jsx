@@ -14,7 +14,6 @@ function Navbar() {
   }, [])
 
   const navLinks = [
-    { name: "About", to: "about" },
     { name: "Projects", to: "projects" },
     { name: "Experience", to: "experience" },
     { name: "Contact", to: "contact" },
@@ -34,9 +33,9 @@ function Navbar() {
           to="hero" 
           smooth={true} 
           duration={500} 
-          className="text-2xl font-heading font-bold text-text hover:text-primary transition-colors cursor-pointer"
+          className="flex items-center cursor-pointer hover:scale-110 transition-transform duration-200"
         >
-          Candice Shen
+          <img src="/favicon.png" alt="Logo" className="w-10 h-10" />
         </Link>
         
         <ul className="hidden md:flex items-center gap-8">
