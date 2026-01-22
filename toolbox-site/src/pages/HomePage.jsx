@@ -129,17 +129,13 @@ function HomePage() {
                       {char}
                     </motion.span>
                   ))}
-                  <motion.svg 
-                    className="absolute w-full h-3 md:h-4 -bottom-1 md:-bottom-2 left-0 text-secondary" 
+                  <svg 
+                    className="absolute w-full h-3 md:h-4 -bottom-1 md:-bottom-2 left-0 text-secondary opacity-60" 
                     viewBox="0 0 100 10" 
                     preserveAspectRatio="none"
-                    initial={{ scaleX: 0, opacity: 0 }}
-                    animate={{ scaleX: 1, opacity: 0.6 }}
-                    transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
-                    style={{ originX: 0 }}
                   >
                     <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
-                  </motion.svg>
+                  </svg>
                 </motion.span> 👋
               </h1>
               <h2 className="text-xl md:text-3xl lg:text-4xl text-secondary font-heading mb-4 md:mb-8 leading-snug font-normal">
