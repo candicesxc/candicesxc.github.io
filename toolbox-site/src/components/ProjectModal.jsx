@@ -119,12 +119,12 @@ function ProjectModal({ project, isOpen, onClose, onNext, onPrev }) {
                         rel="noopener noreferrer"
                         className="inline-block hover:text-primary transition-colors group"
                     >
-                        <h2 className="text-2xl md:text-h2 font-bold mb-2 text-text group-hover:text-primary transition-colors flex items-center gap-2">
+                        <h2 className="text-2xl md:text-h2 font-bold mb-4 text-text group-hover:text-primary transition-colors flex items-center gap-2">
                             {project.title}
                             <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                         </h2>
                     </a>
-                    <p className="text-base md:text-lg text-text/70 mb-4 md:mb-6 font-medium">{project.oneLiner}</p>
+                    <p className="text-base md:text-lg text-text/70 mb-6 md:mb-8 font-medium">{project.oneLiner}</p>
                     
                     <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
                         {project.fullDescription.split('\n\n').map((paragraph, idx) => (
