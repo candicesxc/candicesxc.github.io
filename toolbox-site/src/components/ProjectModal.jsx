@@ -61,7 +61,7 @@ function ProjectModal({ project, isOpen, onClose }) {
                 </button>
 
                 {/* Image */}
-                <div className="relative w-full h-64 md:h-80 bg-gray-100 overflow-hidden">
+                <div className="relative w-full h-64 md:h-80 bg-gray-100 overflow-hidden border-4 border-text rounded-t-large">
                   {!imageLoaded && (
                     <div className="absolute inset-0 bg-gray-200 animate-pulse" />
                   )}
