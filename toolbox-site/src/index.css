@@ -11,14 +11,20 @@
     @apply m-0 font-body text-body text-text bg-background;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    cursor: none; /* Hide default cursor */
+  }
+
+  /* Override cursor for clickable elements if needed, but we want custom cursor everywhere */
+  a, button, input, textarea, select, .cursor-pointer {
+    cursor: none;
   }
 
   h1 {
-    @apply text-h1 font-heading font-bold leading-heading text-text;
+    @apply text-h1 font-heading font-bold leading-heading text-text tracking-tight;
   }
 
   h2 {
-    @apply text-h2 font-heading font-semibold leading-heading text-text;
+    @apply text-h2 font-heading font-semibold leading-heading text-text tracking-tight;
   }
 
   h3 {
@@ -36,23 +42,27 @@
   }
 
   .btn-primary {
-    @apply px-6 py-3 bg-primary text-white rounded-lg font-medium transition-all duration-200 hover:bg-opacity-90 hover:scale-105 active:scale-95 shadow-md;
+    @apply px-8 py-4 bg-primary text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-opacity-90 hover:scale-105 active:scale-95 shadow-lg border-2 border-transparent hover:border-background;
   }
 
   .btn-secondary {
-    @apply px-6 py-3 bg-surface text-white rounded-lg font-medium transition-all duration-200 hover:bg-opacity-90 hover:scale-105 active:scale-95 shadow-md;
+    @apply px-8 py-4 bg-secondary text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-opacity-90 hover:scale-105 active:scale-95 shadow-lg border-2 border-transparent hover:border-background;
   }
 
   .btn-tertiary {
-    @apply px-4 py-2 bg-white text-text border border-surface rounded-lg font-medium transition-all duration-200 hover:bg-gray-50 hover:scale-105 active:scale-95;
+    @apply px-6 py-3 bg-white text-text border-2 border-secondary rounded-lg font-bold transition-all duration-300 hover:bg-secondary hover:text-white hover:scale-105 active:scale-95 shadow-md;
   }
 
   .card {
-    @apply bg-white rounded-card p-6 shadow-sm hover:shadow-md transition-shadow duration-200 border border-surface/10;
+    @apply bg-white rounded-card p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary/20 hover:border-accent/50 hover:-translate-y-2;
   }
   
   .tag {
-    @apply px-3 py-1 bg-surface/10 text-surface text-small rounded-full font-medium;
+    @apply px-3 py-1 bg-secondary/10 text-secondary text-small rounded-full font-bold border border-secondary/20;
+  }
+
+  .animate-ping-slow {
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 }
 
@@ -66,22 +76,29 @@
 
 .bubble {
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(8px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 48, 73, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(102, 155, 188, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.bubble:hover {
+  transform: scale(1.1) !important;
+  z-index: 10;
+  border-color: #c1121f;
 }
 
 .bubble img {
-  max-width: 60%;
-  max-height: 60%;
+  max-width: 65%;
+  max-height: 65%;
   object-fit: contain;
 }
 
@@ -104,7 +121,7 @@
     transform: translateY(-10px);
   }
   50% {
-    transform: translateY(-18px);
+    transform: translateY(-25px);
   }
   100% {
     transform: translateY(-10px);
@@ -121,7 +138,7 @@
 
 .bubble-2 {
   top: 35%;
-  left: 10%;
+  left: 5%;
   animation:
     bubbleFloatIn 1.05s ease-out 0.1s forwards,
     bubbleDrift 5.4s ease-in-out 1.05s infinite;
@@ -136,8 +153,8 @@
 }
 
 .bubble-4 {
-  bottom: 20%;
-  left: 30%;
+  bottom: 25%;
+  left: 25%;
   animation:
     bubbleFloatIn 1.15s ease-out 0.3s forwards,
     bubbleDrift 5.6s ease-in-out 1.15s infinite;
@@ -145,15 +162,15 @@
 
 .bubble-5 {
   top: 20%;
-  right: 40%;
+  right: 35%;
   animation:
     bubbleFloatIn 1.2s ease-out 0.4s forwards,
     bubbleDrift 5.8s ease-in-out 1.2s infinite;
 }
 
 .bubble-6 {
-  top: 55%;
-  left: 60%;
+  top: 60%;
+  left: 55%;
   animation:
     bubbleFloatIn 1.25s ease-out 0.5s forwards,
     bubbleDrift 6.2s ease-in-out 1.25s infinite;

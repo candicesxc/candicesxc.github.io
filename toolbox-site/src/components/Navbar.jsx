@@ -1,66 +1,67 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-scroll'
 import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
 
 function Navbar() {
-  const location = useLocation()
+  const [isScrolled, setIsScrolled] = useState(false)
 
-  const isActive = (path) => location.pathname === path
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const navLinks = [
+    { name: "About", to: "about" },
+    { name: "Projects", to: "projects" },
+    { name: "Experience", to: "experience" },
+    { name: "Contact", to: "contact" },
+  ]
 
   return (
     <motion.nav
-      className="sticky top-0 z-50 bg-white shadow-sm"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-background/90 backdrop-blur-md shadow-md py-4' : 'bg-transparent py-6'
+      }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
+      transition={{ duration: 0.5 }}
     >
-      <div className="container-main">
-        <div className="flex items-center justify-between h-16">
-          <Link to="/" className="text-lg md:text-xl font-heading font-bold text-neutral-dark hover:text-primary transition-colors">
-            Candice Shen
-          </Link>
-          <ul className="flex items-center gap-3 md:gap-6">
-            <li>
+      <div className="container-main flex items-center justify-between">
+        <Link 
+          to="hero" 
+          smooth={true} 
+          duration={500} 
+          className="text-2xl font-heading font-bold text-text hover:text-primary transition-colors cursor-pointer"
+        >
+          Candice Shen
+        </Link>
+        
+        <ul className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <li key={link.name}>
               <Link
-                to="/"
-                className={`text-sm md:text-body font-medium transition-colors ${
-                  isActive('/') ? 'text-accent' : 'text-neutral-dark hover:text-primary'
-                }`}
+                to={link.to}
+                smooth={true}
+                duration={500}
+                offset={-100}
+                className="text-lg font-body font-medium text-text hover:text-primary cursor-pointer transition-colors relative group"
               >
-                Home
+                {link.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </li>
-            <li>
-              <Link
-                to="/projects"
-                className={`text-sm md:text-body font-medium transition-colors ${
-                  isActive('/projects') ? 'text-accent' : 'text-neutral-dark hover:text-primary'
-                }`}
-              >
-                Projects
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/manual"
-                className={`text-sm md:text-body font-medium transition-colors ${
-                  isActive('/manual') ? 'text-accent' : 'text-neutral-dark hover:text-primary'
-                }`}
-              >
-                Manual
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/contact"
-                className={`text-sm md:text-body font-medium transition-colors ${
-                  isActive('/contact') ? 'text-accent' : 'text-neutral-dark hover:text-primary'
-                }`}
-              >
-                Contact
-              </Link>
-            </li>
-          </ul>
-        </div>
+          ))}
+        </ul>
+        
+        {/* Mobile Menu Button Placeholder - can be expanded */}
+        <button className="md:hidden text-text">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
     </motion.nav>
   )

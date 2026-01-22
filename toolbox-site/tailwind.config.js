@@ -7,38 +7,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#B7C3F3', // Soft periwinkle
-        surface: '#4F6272',    // Muted slate (Secondary/Containers)
-        primary: '#DD7596',    // Dusty rose (Accent 1 - Buttons/Links)
-        highlight: '#CF1259',  // Deep raspberry (Accent 2 - Highlight/Bold)
-        text: '#404E5C',       // Dark navy
-        neutral: {
-          light: '#F7F7F5',
-          dark: '#333333',
-        },
+        background: '#fdf0d5', // Papaya Whip
+        text: '#003049',       // Deep Space Blue
+        primary: '#780000',    // Molten Lava
+        secondary: '#669bbc',  // Steel Blue
+        accent: '#c1121f',     // Flag Red
+        surface: '#669bbc',    // Using Steel Blue for some surface/borders
       },
       fontFamily: {
-        heading: ['Plus Jakarta Sans', 'sans-serif'],
-        body: ['Inter', 'sans-serif'],
+        heading: ['DynaPuff', 'cursive'],
+        body: ['Lexend', 'sans-serif'],
       },
       fontSize: {
-        'h1': '36px',
-        'h2': '28px',
-        'h3': '20px',
-        'body': '16px',
-        'small': '14px',
+        'h1': '4rem',
+        'h2': '3rem',
+        'h3': '2rem',
+        'body': '1.125rem',
+        'small': '0.875rem',
       },
       lineHeight: {
-        'heading': '1.25',
+        'heading': '1.1',
         'body': '1.6',
       },
       borderRadius: {
         'card': '12px',
         'large': '16px',
-      },
-      spacing: {
-        '18': '4.5rem',
-        '22': '5.5rem',
       },
     },
   },
