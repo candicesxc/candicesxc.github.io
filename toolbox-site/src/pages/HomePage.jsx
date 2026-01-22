@@ -78,15 +78,6 @@ const experience = [
   }
 ]
 
-const orgLogos = [
-  { src: "/logos/microsoft.png", alt: "Microsoft" },
-  { src: "/logos/materialize.jpeg", alt: "Materialize" },
-  { src: "/logos/starburst.png", alt: "Starburst" },
-  { src: "/logos/attentive.png", alt: "Attentive" },
-  { src: "/logos/yalesom.svg", alt: "Yale SOM" },
-  { src: "/logos/nyu.png", alt: "NYU" },
-]
-
 function HomePage() {
   const [selectedProject, setSelectedProject] = useState(null)
 
@@ -104,16 +95,16 @@ function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
             >
-              <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+              <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-tight tracking-tight">
                 Hey there, <br/>
                 I’m <span className="text-primary relative inline-block">
                   Candice
-                  <svg className="absolute w-full h-3 -bottom-1 left-0 text-secondary opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <svg className="absolute w-full h-4 -bottom-2 left-0 text-secondary opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
                     <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
                   </svg>
                 </span> 👋
               </h1>
-              <h2 className="text-3xl md:text-4xl text-secondary font-heading mb-8 leading-snug">
+              <h2 className="text-3xl md:text-4xl text-secondary font-heading mb-8 leading-snug font-normal">
                 I’m a <a href="https://som.yale.edu/" target="_blank" rel="noopener noreferrer" className="underline decoration-2 underline-offset-4 hover:text-primary transition-colors">Yale MBA</a> candidate and tech marketer using vibe coding to bring ideas to life.
               </h2>
 
@@ -127,20 +118,10 @@ function HomePage() {
             <div className="w-full h-[400px] md:h-[500px] relative">
                <LogoBubbles />
             </div>
-             {/* Organizations */}
-             <div className="mt-8 w-full">
-                <h3 className="text-sm uppercase tracking-widest font-bold text-secondary mb-6 text-center">Organizations I've been part of</h3>
-                <div className="flex flex-wrap justify-center gap-8 md:gap-12 items-center">
-                  {orgLogos.map((logo, idx) => (
-                    <img 
-                      key={idx} 
-                      src={logo.src} 
-                      alt={logo.alt} 
-                      className="h-10 md:h-14 w-auto opacity-80 hover:opacity-100 transition-all duration-300 hover:scale-110"
-                    />
-                  ))}
-                </div>
-              </div>
+             {/* Organizations - logos removed from list, just text if desired, or completely removed. 
+                 User request: "Don't have any company logos under the Organizations I've been part of because you are repeating the info in the bubbles." 
+                 So I will remove this section entirely as per request.
+             */}
           </div>
         </div>
       </section>

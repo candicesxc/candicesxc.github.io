@@ -26,7 +26,8 @@ function ProjectCard({ project, onClick }) {
         />
       </div>
       <div className="flex-1 flex flex-col">
-        <h3 className="text-2xl font-bold mb-2 text-primary">{project.title}</h3>
+        {/* Changed text-primary to text-text which is dark teal/blue from palette */}
+        <h3 className="text-2xl font-bold mb-2 text-text">{project.title}</h3>
         <p className="text-base text-text/80 leading-relaxed mb-4 flex-1">
           {project.oneLiner}
         </p>
