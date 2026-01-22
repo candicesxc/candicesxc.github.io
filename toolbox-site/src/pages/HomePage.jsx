@@ -22,7 +22,7 @@ const projects = [
     id: 2,
     title: "Competitive Battlecard AI",
     oneLiner: "Automated market intelligence tool that transforms URLs into GTM battlecards.",
-    fullDescription: "Designed for product marketers and GTM teams, this tool eliminates the manual grind of competitor research. By simply entering a company website, the system independently identifies top rivals, scores them for relevancy, and generates structured battlecards—distilling complex market data into actionable insights like pricing, \"How to Win\" strategies, and \"Potential Landmines.\"\n\nThe architecture focuses on high-utility output and data persistence, featuring a neural search layer to uncover niche competitors that traditional search engines often miss. To bridge the gap between analysis and execution, I built a custom jsPDF integration that transforms AI-generated insights into board-ready PDF reports. The interface also includes a local storage system for saving and reloading intelligence mid-workflow, ensuring that strategic data is always accessible. This project demonstrates how to turn raw web data into high-stakes strategic assets that empower sales teams to close deals with confidence.",
+    fullDescription: "The architecture focuses on high-utility output and data persistence, featuring a neural search layer to uncover niche competitors that traditional search engines often miss. To bridge the gap between analysis and execution, I built a custom jsPDF integration that transforms AI-generated insights into board-ready PDF reports. The interface also includes a local storage system for saving and reloading intelligence mid-workflow, ensuring that strategic data is always accessible. This project demonstrates how to turn raw web data into high-stakes strategic assets that empower sales teams to close deals with confidence.",
     tags: ["#MarketIntelligence", "#ProductMarketing", "#NeuralSearch", "#GTM-Strategy", "#TailwindCSS", "#DecisionSupport"],
     image: "/images/Competitive-Battlecard-AI.png",
     liveLink: "https://candiceshen.com/competitive-battlecard-ai/",
@@ -32,7 +32,7 @@ const projects = [
     id: 3,
     title: "Profile-to-Profile Outreach Engine",
     oneLiner: "Multi-agent AI tool for high-conversion, personalized LinkedIn networking.",
-    fullDescription: "I developed this full-stack networking tool to transform the \"blank page\" problem of cold outreach into a data-driven, high-conversion process. By orchestrating a multi-agent AI system, the engine analyzes the \"hidden\" overlap between two LinkedIn profiles—finding shared companies, schools, and niche skills—to draft personalized messages that actually get replies.\n\nThe system uses a FastAPI backend to coordinate CrewAI agents for profile extraction, research, and drafting. I integrated the Exa Search API to pull real-time company insights, allowing GPT-4o to generate content that respects strict platform character limits. The frontend features a UUID-based persistence system for tracking outreach history and iterative message refinement without requiring a login. This project highlights the intersection of autonomous AI research and streamlined professional communication.",
+    fullDescription: "The system uses a FastAPI backend to coordinate CrewAI agents for profile extraction, research, and drafting. I integrated the Exa Search API to pull real-time company insights, allowing GPT-4o to generate content that respects strict platform character limits. The frontend features a UUID-based persistence system for tracking outreach history and iterative message refinement without requiring a login. This project highlights the intersection of autonomous AI research and streamlined professional communication.",
     tags: ["#Python", "#FastAPI", "#CrewAI", "#OpenAI", "#Exa-Search", "#MultiAgentSystems", "#FullStack"],
     image: "/images/Personalized-Outreach-Generator.png",
     liveLink: "https://candiceshen.com/Profile-to-Profile-Outreach-Engine/",
@@ -96,6 +96,11 @@ function HomePage() {
     setSelectedProject(projects[prevIndex])
   }
 
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  }
+
   return (
     <div className="min-h-screen">
       <Cursor />
@@ -115,19 +120,26 @@ function HomePage() {
                 Hey there, <br/>
                 I’m <motion.span 
                   className="text-primary relative inline-block"
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: 0.2, 
-                    type: "spring", 
-                    stiffness: 100 
-                  }}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ staggerChildren: 0.1, delayChildren: 0.5 }}
                 >
-                  Candice
-                  <svg className="absolute w-full h-3 md:h-4 -bottom-1 md:-bottom-2 left-0 text-secondary opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  {"Candice".split('').map((char, index) => (
+                    <motion.span key={index} variants={letterVariants} className="inline-block">
+                      {char}
+                    </motion.span>
+                  ))}
+                  <motion.svg 
+                    className="absolute w-full h-3 md:h-4 -bottom-1 md:-bottom-2 left-0 text-secondary" 
+                    viewBox="0 0 100 10" 
+                    preserveAspectRatio="none"
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    animate={{ scaleX: 1, opacity: 0.6 }}
+                    transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
+                    style={{ originX: 0 }}
+                  >
                     <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
-                  </svg>
+                  </motion.svg>
                 </motion.span> 👋
               </h1>
               <h2 className="text-xl md:text-3xl lg:text-4xl text-secondary font-heading mb-4 md:mb-8 leading-snug font-normal">
