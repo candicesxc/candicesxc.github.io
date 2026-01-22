@@ -90,7 +90,7 @@ function HomePage() {
       {/* Hero Section */}
       <section id="hero" className="min-h-screen flex items-center bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(193,18,31,0.1),transparent_40%)]"></div>
-        <div className="container-main py-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
+        <div className="container-main pt-32 pb-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
           <div className="flex-1 text-left">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -141,7 +141,7 @@ function HomePage() {
       {/* Selected Projects */}
       <section id="projects" className="py-12 md:py-24 bg-white relative">
          <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-background to-white"></div>
-        <div className="container-main">
+        <div className="container-main relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
