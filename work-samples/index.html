@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>Work Samples - Candice Shen</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div class="container">
+            <div class="hero-section">
+                <!-- Pixel art safe/vault -->
+                <div class="safe-container">
+                    <svg class="safe" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Safe body -->
+                        <rect x="20" y="40" width="160" height="140" fill="#404040"/>
+                        <rect x="30" y="50" width="140" height="120" fill="#5a5a5a"/>
+                        <!-- Safe door outline -->
+                        <rect x="40" y="60" width="120" height="100" fill="#6b6b6b"/>
+                        <rect x="45" y="65" width="110" height="90" fill="#787878"/>
+                        <!-- Lock mechanism circle -->
+                        <circle cx="100" cy="110" r="25" fill="#505050"/>
+                        <circle cx="100" cy="110" r="20" fill="#606060"/>
+                        <!-- Lock icon container -->
+                        <g id="lock-icon">
+                            <!-- Locked state -->
+                            <g class="lock-locked">
+                                <rect x="90" y="115" width="20" height="15" fill="#ffd700"/>
+                                <rect x="92" y="107" width="16" height="3" fill="#ffd700"/>
+                                <rect x="92" y="104" width="3" height="6" fill="#ffd700"/>
+                                <rect x="105" y="104" width="3" height="6" fill="#ffd700"/>
+                                <rect x="95" y="101" width="10" height="3" fill="#ffd700"/>
+                            </g>
+                            <!-- Unlocked state -->
+                            <g class="lock-unlocked">
+                                <rect x="90" y="115" width="20" height="15" fill="#00ff00"/>
+                                <rect x="92" y="107" width="16" height="3" fill="#00ff00"/>
+                                <rect x="92" y="104" width="3" height="9" fill="#00ff00"/>
+                                <rect x="105" y="107" width="3" height="6" fill="#00ff00"/>
+                            </g>
+                        </g>
+                        <!-- Safe handle -->
+                        <rect x="135" y="105" width="5" height="10" fill="#404040"/>
+                        <rect x="140" y="107" width="8" height="6" fill="#404040"/>
+                    </svg>
+
+                    <!-- Pixel art queen avatar -->
+                    <div class="queen-avatar">
+                        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Tiara -->
+                            <rect x="28" y="18" width="4" height="4" fill="#ffd700"/>
+                            <rect x="38" y="15" width="4" height="7" fill="#ffd700"/>
+                            <rect x="48" y="18" width="4" height="4" fill="#ffd700"/>
+                            <rect x="32" y="22" width="16" height="3" fill="#ffd700"/>
+                            <!-- Tiara gems -->
+                            <rect x="40" y="17" width="2" height="2" fill="#ff69b4"/>
+
+                            <!-- Head -->
+                            <rect x="30" y="25" width="20" height="20" fill="#f4c2a0"/>
+                            <!-- Hair (long, dark) -->
+                            <rect x="26" y="25" width="4" height="25" fill="#2d1810"/>
+                            <rect x="50" y="25" width="4" height="25" fill="#2d1810"/>
+                            <rect x="26" y="50" width="28" height="8" fill="#2d1810"/>
+
+                            <!-- Eyes -->
+                            <rect x="34" y="32" width="3" height="3" fill="#1a1a1a"/>
+                            <rect x="43" y="32" width="3" height="3" fill="#1a1a1a"/>
+
+                            <!-- Smile -->
+                            <rect x="36" y="40" width="8" height="2" fill="#1a1a1a"/>
+                            <rect x="36" y="38" width="2" height="2" fill="#1a1a1a"/>
+                            <rect x="42" y="38" width="2" height="2" fill="#1a1a1a"/>
+
+                            <!-- Body -->
+                            <rect x="32" y="45" width="16" height="20" fill="#9370db"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <header>
+                    <div id="greeting" class="greeting" role="status"></div>
+                    <h1>Thanks for taking a look at my work samples</h1>
+                    <p class="subhead">These are shared as view only for work conversations.</p>
+                </header>
+
+                <section class="controls">
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="confirm-checkbox" aria-describedby="helper-text">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">I'll use these samples for evaluation only and won't share the link.</span>
+                        </label>
+                        <p id="helper-text" class="helper-text">If you want to loop in someone else, just ask me and I'll share the right way.</p>
+                    </div>
+
+                    <div class="error-message" id="error-message" role="alert" aria-live="polite"></div>
+
+                    <button id="unlock-button" class="unlock-button" disabled aria-label="Unlock and view work samples">
+                        <span class="button-text">Unlock and view samples</span>
+                    </button>
+
+                    <a href="/" class="secondary-link">Visit my public portfolio</a>
+                </section>
+
+                <footer>
+                    <p class="footer-text">Trouble accessing the folder? <a href="mailto:candice.shen@yale.edu">Email me</a></p>
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
