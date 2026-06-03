@@ -86,7 +86,7 @@ function ProjectModal({ project, isOpen, onClose, onNext, onPrev }) {
                     </button>
 
                     {/* Image (Clickable) */}
-                    <a 
+                    <a
                     href={project.liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -94,20 +94,33 @@ function ProjectModal({ project, isOpen, onClose, onNext, onPrev }) {
                     title="Visit live site"
                     >
                         {project.screenshots && project.screenshots.length > 0 ? (
-                          <div className="relative w-full bg-gray-900 overflow-hidden shadow-[0_0_20px_rgba(0,48,73,0.3)] rounded-t-large" style={{minHeight: '320px'}}>
-                            <div className="flex items-center justify-center gap-3 px-6 py-4 overflow-x-auto">
+                          <div className="relative w-full bg-gray-900 overflow-hidden shadow-[0_0_20px_rgba(0,48,73,0.3)] rounded-t-large" style={{minHeight: '340px'}}>
+                            {/* Label */}
+                            <div className="absolute top-3 left-4 z-10 flex items-center gap-1.5 bg-white/10 backdrop-blur-sm text-white/70 text-xs font-medium px-3 py-1 rounded-full pointer-events-none">
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" strokeWidth="2"/><line x1="12" y1="18" x2="12" y2="18" strokeWidth="2" strokeLinecap="round"/></svg>
+                              Tap a screenshot to preview
+                            </div>
+                            <div className="flex items-center justify-center gap-4 px-6 pt-10 pb-5 overflow-x-auto">
                               {project.screenshots.map((src, idx) => (
-                                <div
+                                <button
                                   key={idx}
+                                  type="button"
                                   onClick={(e) => { e.preventDefault(); setActiveScreenshot(idx); }}
-                                  className={`flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${activeScreenshot === idx ? 'border-accent scale-100 shadow-xl' : 'border-white/20 scale-90 opacity-60 hover:opacity-80'}`}
+                                  className={`flex-shrink-0 rounded-[2rem] overflow-hidden transition-all duration-300 focus:outline-none ring-offset-2 ${activeScreenshot === idx ? 'ring-2 ring-accent scale-105 shadow-2xl opacity-100' : 'ring-1 ring-white/20 scale-90 opacity-50 hover:opacity-80 hover:scale-95'}`}
                                   style={{height: '280px', width: 'auto'}}
+                                  aria-label={`Screenshot ${idx + 1}`}
                                 >
                                   <img src={src} alt={`${project.title} screenshot ${idx + 1}`} className="h-full w-auto object-cover" loading="lazy" />
-                                </div>
+                                </button>
                               ))}
                             </div>
-                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-end justify-center pb-3 pointer-events-none">
+                            {/* Dot indicators */}
+                            <div className="flex justify-center gap-1.5 pb-3">
+                              {project.screenshots.map((_, idx) => (
+                                <span key={idx} className={`block w-1.5 h-1.5 rounded-full transition-all duration-300 ${activeScreenshot === idx ? 'bg-accent w-4' : 'bg-white/30'}`} />
+                              ))}
+                            </div>
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-end justify-center pb-12 pointer-events-none">
                               <span className="opacity-0 group-hover:opacity-100 bg-white/90 text-text px-4 py-2 rounded-full font-medium shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all pointer-events-none">
                                 Visit Live Site
                               </span>
