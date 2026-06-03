@@ -30,13 +30,22 @@ const projects = [
   },
   {
     id: 3,
-    title: "Profile-to-Profile Outreach Engine",
-    oneLiner: "Multi-agent AI tool for high-conversion, personalized LinkedIn networking.",
-    fullDescription: "I developed this full-stack networking tool to transform the \"blank page\" problem of cold outreach into a data-driven, high-conversion process. By orchestrating a multi-agent AI system, the engine analyzes the \"hidden\" overlap between two LinkedIn profiles—finding shared companies, schools, and niche skills—to draft personalized messages that actually get replies.\n\nThe system uses a FastAPI backend to coordinate CrewAI agents for profile extraction, research, and drafting. I integrated the Exa Search API to pull real-time company insights, allowing GPT-4o to generate content that respects strict platform character limits. The frontend features a UUID-based persistence system for tracking outreach history and iterative message refinement without requiring a login. This project highlights the intersection of autonomous AI research and streamlined professional communication.",
-    tags: ["#Python", "#FastAPI", "#CrewAI", "#OpenAI", "#Exa-Search", "#MultiAgentSystems", "#FullStack"],
-    image: "/images/Personalized-Outreach-Generator.png",
-    liveLink: "https://candiceshen.com/Profile-to-Profile-Outreach-Engine/",
-    repoLink: "https://github.com/candicesxc/Profile-to-Profile-Outreach-Engine"
+    title: "Pocket Pitch Legends",
+    oneLiner: "Location-based mobile web app that turns your city into a football battleground for the 2026 World Cup.",
+    fullDescription: "Built for the 2026 World Cup, Pocket Pitch Legends is a Pokémon Go-style mobile web experience that transforms real-world geography into a live football arena. Players explore their city on an interactive map, discover rival squads at real landmarks, and challenge them to geo-anchored PVP matches. Every zone has a leaderboard, live match feed, and a roster of available challengers—making even a walk across campus feel like match day.\n\nThe app features AI-powered mini-games to sharpen your skills between battles. In the Passing Triangle drill, Google Gemini tracks your defender movement in real-time and narrates your performance like a live broadcast commentator—boosting your form and confidence stats. The full-stack architecture combines React 18, Leaflet for live mapping, and Supabase for real-time match data and leaderboards. Designed mobile-first and deployed on Vercel, the experience is built for the pocket.\n\nBuilt with Daniel Yang · Yiqi Song · Helen Deng for Generative AI and Social Media. Received the highest grade and standout professor feedback in the cohort.",
+    tags: ["#React18", "#TypeScript", "#Leaflet", "#Supabase", "#GoogleGemini", "#LocationBased", "#MobileFirst", "#GenerativeAI"],
+    image: "/images/pocket-pitch-legends-logo.png",
+    imageBg: "#1a2a1a",
+    imageContain: true,
+    screenshots: [
+      "/images/pocket-pitch-legends-logo.png",
+      "/images/ppl-map-bg.jpg",
+      "/images/ppl-player-card-bg.jpg"
+    ],
+    team: "Daniel Yang · Yiqi Song · Helen Deng",
+    award: "Highest Grade · Generative AI & Social Media",
+    liveLink: "https://pixel-perfect-capture-nine.vercel.app/",
+    repoLink: "https://github.com/gliderhover/pixel-perfect-capture"
   }
 ]
 

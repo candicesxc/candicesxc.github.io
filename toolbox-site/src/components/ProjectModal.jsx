@@ -3,6 +3,11 @@ import { useState, useEffect } from 'react'
 
 function ProjectModal({ project, isOpen, onClose, onNext, onPrev }) {
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [activeScreenshot, setActiveScreenshot] = useState(0)
+
+  useEffect(() => {
+    setActiveScreenshot(0)
+  }, [project])
 
   useEffect(() => {
     if (isOpen) {
@@ -82,12 +87,33 @@ function ProjectModal({ project, isOpen, onClose, onNext, onPrev }) {
 
                     {/* Image (Clickable) */}
                     <a 
-                    href={project.liveLink} 
-                    target="_blank" 
+                    href={project.liveLink}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="block cursor-pointer group"
                     title="Visit live site"
                     >
+                        {project.screenshots && project.screenshots.length > 0 ? (
+                          <div className="relative w-full bg-gray-900 overflow-hidden shadow-[0_0_20px_rgba(0,48,73,0.3)] rounded-t-large" style={{minHeight: '320px'}}>
+                            <div className="flex items-center justify-center gap-3 px-6 py-4 overflow-x-auto">
+                              {project.screenshots.map((src, idx) => (
+                                <div
+                                  key={idx}
+                                  onClick={(e) => { e.preventDefault(); setActiveScreenshot(idx); }}
+                                  className={`flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${activeScreenshot === idx ? 'border-accent scale-100 shadow-xl' : 'border-white/20 scale-90 opacity-60 hover:opacity-80'}`}
+                                  style={{height: '280px', width: 'auto'}}
+                                >
+                                  <img src={src} alt={`${project.title} screenshot ${idx + 1}`} className="h-full w-auto object-cover" loading="lazy" />
+                                </div>
+                              ))}
+                            </div>
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-end justify-center pb-3 pointer-events-none">
+                              <span className="opacity-0 group-hover:opacity-100 bg-white/90 text-text px-4 py-2 rounded-full font-medium shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all pointer-events-none">
+                                Visit Live Site
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
                         <div className="relative w-full aspect-video md:h-80 bg-gray-100 overflow-hidden shadow-[0_0_20px_rgba(0,48,73,0.3)] rounded-t-large">
                         {!imageLoaded && (
                             <div className="absolute inset-0 bg-gray-200 animate-pulse" />
@@ -101,13 +127,13 @@ function ProjectModal({ project, isOpen, onClose, onNext, onPrev }) {
                             onLoad={() => setImageLoaded(true)}
                             loading="lazy"
                         />
-                        {/* Hover overlay hint */}
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
                             <span className="opacity-0 group-hover:opacity-100 bg-white/90 text-text px-4 py-2 rounded-full font-medium shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all">
                                 Visit Live Site
                             </span>
                         </div>
                         </div>
+                        )}
                     </a>
                 </div>
 
@@ -133,6 +159,23 @@ function ProjectModal({ project, isOpen, onClose, onNext, onPrev }) {
                             </p>
                         ))}
                     </div>
+
+                    {/* Team & Award */}
+                    {(project.team || project.award) && (
+                      <div className="flex flex-wrap items-center gap-3 mb-6 md:mb-8">
+                        {project.award && (
+                          <span className="inline-flex items-center gap-1.5 bg-yellow-50 border border-yellow-300 text-yellow-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            {project.award}
+                          </span>
+                        )}
+                        {project.team && (
+                          <span className="text-xs text-text/60 font-medium">
+                            Team: {project.team}
+                          </span>
+                        )}
+                      </div>
+                    )}
 
                     {/* Tags */}
                     {project.tags && project.tags.length > 0 && (

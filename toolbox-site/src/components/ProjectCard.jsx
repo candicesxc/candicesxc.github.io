@@ -11,14 +11,14 @@ function ProjectCard({ project, onClick }) {
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
     >
-      <div className="relative w-full aspect-[2/1] bg-secondary/10 rounded-lg overflow-hidden mb-6 border-2 border-secondary/20 group-hover:border-accent transition-colors">
+      <div className="relative w-full aspect-[2/1] rounded-lg overflow-hidden mb-6 border-2 border-secondary/20 group-hover:border-accent transition-colors" style={{background: project.imageBg || undefined}}>
         {!imageLoaded && (
           <div className="absolute inset-0 bg-secondary/10 animate-pulse" />
         )}
         <img
           src={project.image || `/project-placeholder.svg`}
           alt={project.title}
-          className={`w-full h-full object-cover transition-opacity duration-300 ${
+          className={`w-full h-full transition-opacity duration-300 ${project.imageContain ? 'object-contain p-4' : 'object-cover'} ${
             imageLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           onLoad={() => setImageLoaded(true)}
