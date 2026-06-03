@@ -32,17 +32,17 @@ const projects = [
     id: 3,
     title: "Pocket Pitch Legends",
     oneLiner: "Location-based mobile web app that turns your city into a football battleground for the 2026 World Cup.",
-    fullDescription: "Built for the 2026 World Cup, Pocket Pitch Legends is a Pokémon Go-style mobile web experience that transforms real-world geography into a live football arena. Players explore their city on an interactive map, discover rival squads at real landmarks, and challenge them to geo-anchored PVP matches. Every zone has a leaderboard, live match feed, and a roster of available challengers—making even a walk across campus feel like match day.\n\nThe app features AI-powered mini-games to sharpen your skills between battles. In the Passing Triangle drill, Google Gemini tracks your defender movement in real-time and narrates your performance like a live broadcast commentator—boosting your form and confidence stats. The full-stack architecture combines React 18, Leaflet for live mapping, and Supabase for real-time match data and leaderboards. Designed mobile-first and deployed on Vercel, the experience is built for the pocket.\n\nBuilt with Daniel Yang · Yiqi Song · Helen Deng for Generative AI and Social Media. Received the highest grade and standout professor feedback in the cohort.",
+    fullDescription: "Built for the 2026 World Cup, Pocket Pitch Legends is a Pokémon Go-style mobile web experience that transforms real-world geography into a live football arena. Players explore their city on an interactive map, discover rival squads at real landmarks, and challenge them to geo-anchored PVP matches. Every zone has a leaderboard, live match feed, and a roster of available challengers—making even a walk across campus feel like match day.\n\nThe app features AI-powered mini-games to sharpen your skills between battles. In the Passing Triangle drill, Google Gemini tracks your defender movement in real-time and narrates your performance like a live broadcast commentator—boosting your form and confidence stats. The full-stack architecture combines React 18, Leaflet for live mapping, and Supabase for real-time match data and leaderboards. Designed mobile-first and deployed on Vercel, the experience is built for the pocket.",
     tags: ["#React18", "#TypeScript", "#Leaflet", "#Supabase", "#GoogleGemini", "#LocationBased", "#MobileFirst", "#GenerativeAI"],
     image: "/images/pocket-pitch-legends-logo.png",
     imageBg: "#1a2a1a",
     imageContain: true,
     screenshots: [
-      "/images/pocket-pitch-legends-logo.png",
-      "/images/ppl-map-bg.jpg",
-      "/images/ppl-player-card-bg.jpg"
+      "/images/ppl1.png",
+      "/images/ppl2.png",
+      "/images/ppl3.png"
     ],
-    team: "Daniel Yang · Yiqi Song · Helen Deng",
+    team: "Candice Shen · Daniel Yang · Yiqi Song · Helen Deng",
     award: "Highest Grade · Generative AI & Social Media",
     liveLink: "https://pixel-perfect-capture-nine.vercel.app/",
     repoLink: "https://github.com/gliderhover/pixel-perfect-capture"
