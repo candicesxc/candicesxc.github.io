@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramp Growth CRO Case Study</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f13; color: #e8e8f0; min-height: 100vh; }
+
+  /* Nav */
+  nav { background: #17171f; border-bottom: 1px solid #2a2a3a; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; position: sticky; top: 0; z-index: 100; }
+  nav .logo { font-weight: 700; font-size: 1.1rem; color: #fff; padding: 1rem 0; letter-spacing: -0.02em; }
+  nav .logo span { color: #6c63ff; }
+  .nav-tabs { display: flex; gap: 0; }
+  .nav-tab { padding: 1.1rem 1.2rem; font-size: 0.85rem; color: #888; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+  .nav-tab:hover { color: #ccc; }
+  .nav-tab.active { color: #fff; border-bottom-color: #6c63ff; }
+
+  /* Layout */
+  .page { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  h1 { font-size: 1.7rem; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: -0.03em; }
+  h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #c0c0d8; }
+  h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: #a0a0c0; }
+  .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+
+  /* KPI cards */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .kpi { background: #17171f; border: 1px solid #2a2a3a; border-radius: 12px; padding: 1.2rem 1.4rem; }
+  .kpi .label { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .kpi .value { font-size: 2rem; font-weight: 700; letter-spacing: -0.04em; }
+  .kpi .delta { font-size: 0.78rem; margin-top: 0.3rem; }
+  .kpi .value.purple { color: #6c63ff; }
+  .kpi .value.green { color: #34d399; }
+  .kpi .value.orange { color: #fb923c; }
+  .kpi .value.red { color: #f87171; }
+  .delta.up { color: #34d399; } .delta.down { color: #f87171; } .delta.neutral { color: #888; }
+
+  /* Chart cards */
+  .chart-card { background: #17171f; border: 1px solid #2a2a3a; border-radius: 12px; padding: 1.4rem; margin-bottom: 1.5rem; }
+  .chart-card canvas { max-height: 320px; }
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  @media (max-width: 768px) { .chart-grid { grid-template-columns: 1fr; } }
+
+  /* Funnel */
+  .funnel-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 1rem 2rem; }
+  .funnel-stage { position: relative; width: 100%; text-align: center; }
+  .funnel-bar { border-radius: 6px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; transition: all 0.3s; cursor: default; height: 52px; }
+  .funnel-arrow { text-align: center; font-size: 0.8rem; color: #888; padding: 4px 0; }
+  .funnel-arrow .rate { font-weight: 700; font-size: 1rem; }
+
+  /* Month selector */
+  .month-selector { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .month-btn { padding: 0.4rem 0.9rem; background: #1e1e2e; border: 1px solid #2a2a3a; border-radius: 20px; font-size: 0.82rem; color: #888; cursor: pointer; transition: all 0.2s; }
+  .month-btn.active { background: #6c63ff; border-color: #6c63ff; color: #fff; }
+  .month-btn:hover:not(.active) { border-color: #555; color: #ccc; }
+
+  /* Insight boxes */
+  .insight-box { border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 1rem; border-left: 3px solid; }
+  .insight-box.alert { background: #1f1015; border-color: #f87171; }
+  .insight-box.info { background: #101520; border-color: #6c63ff; }
+  .insight-box.success { background: #0f1a15; border-color: #34d399; }
+  .insight-box .tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 0.4rem; }
+  .insight-box.alert .tag { color: #f87171; }
+  .insight-box.info .tag { color: #6c63ff; }
+  .insight-box.success .tag { color: #34d399; }
+  .insight-box p { font-size: 0.88rem; color: #b0b0c8; line-height: 1.6; }
+  .insight-box strong { color: #e8e8f0; }
+
+  /* Experiment cards */
+  .exp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; margin-bottom: 1.5rem; }
+  .exp-card { background: #17171f; border: 1px solid #2a2a3a; border-radius: 12px; padding: 1.4rem; }
+  .exp-card .stage-tag { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding: 0.25rem 0.6rem; border-radius: 4px; margin-bottom: 0.8rem; }
+  .tag-visitor { background: #1a1040; color: #a78bfa; }
+  .tag-email { background: #102030; color: #60a5fa; }
+  .tag-mql { background: #102018; color: #34d399; }
+  .exp-card h3 { font-size: 1rem; color: #e8e8f0; margin-bottom: 0.6rem; }
+  .exp-card p { font-size: 0.85rem; color: #888; line-height: 1.6; }
+  .exp-card .metrics { display: flex; gap: 1rem; margin-top: 0.8rem; flex-wrap: wrap; }
+  .exp-card .metric { font-size: 0.78rem; }
+  .exp-card .metric .ml { color: #666; }
+  .exp-card .metric .mv { font-weight: 600; color: #c0c0d8; }
+
+  /* Table */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .data-table th { text-align: left; padding: 0.7rem 1rem; color: #666; font-weight: 600; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.06em; border-bottom: 1px solid #2a2a3a; }
+  .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid #1e1e2e; color: #c0c0d8; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table .highlight { color: #f87171; font-weight: 600; }
+  .data-table .good { color: #34d399; }
+  .pill { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .pill.down { background: #1f1015; color: #f87171; }
+  .pill.up { background: #0f1a15; color: #34d399; }
+  .pill.neutral { background: #1a1a2e; color: #888; }
+
+  /* Decision section */
+  .decision-box { background: linear-gradient(135deg, #1a1040 0%, #101530 100%); border: 1px solid #3a2f80; border-radius: 14px; padding: 2rem; margin-bottom: 1.5rem; }
+  .decision-box h2 { color: #a78bfa; }
+  .decision-box p { font-size: 0.9rem; color: #b0b0c8; line-height: 1.7; margin-bottom: 0.8rem; }
+  .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  @media (max-width: 640px) { .vs-grid { grid-template-columns: 1fr; } }
+  .vs-card { border-radius: 10px; padding: 1.2rem; border: 1px solid #2a2a3a; }
+  .vs-card.winner { border-color: #6c63ff; background: #12102a; }
+  .vs-card.loser { background: #17171f; opacity: 0.7; }
+  .vs-card h3 { font-size: 0.9rem; margin-bottom: 0.8rem; }
+  .vs-card ul { list-style: none; font-size: 0.83rem; color: #888; }
+  .vs-card ul li { padding: 0.3rem 0; padding-left: 1.2rem; position: relative; line-height: 1.5; }
+  .vs-card ul li::before { content: '→'; position: absolute; left: 0; color: #555; }
+  .winner-badge { display: inline-block; background: #6c63ff; color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; vertical-align: middle; }
+
+  .missing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+  .missing-item { background: #17171f; border: 1px solid #2a2a3a; border-radius: 10px; padding: 1rem 1.2rem; font-size: 0.85rem; color: #888; line-height: 1.5; }
+  .missing-item strong { display: block; color: #c0c0d8; margin-bottom: 0.3rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Ramp <span>CRO</span> Analysis</div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showPage('overview')">Overview</div>
+    <div class="nav-tab" onclick="showPage('cohorts')">Monthly Cohorts</div>
+    <div class="nav-tab" onclick="showPage('december')">December Anomaly</div>
+    <div class="nav-tab" onclick="showPage('experiments')">Experiments</div>
+    <div class="nav-tab" onclick="showPage('decision')">Decision & Gaps</div>
+  </div>
+</nav>
+
+<!-- ===== PAGE 1: OVERVIEW ===== -->
+<div class="page active" id="page-overview">
+  <h1>Inbound Funnel Analysis</h1>
+  <p class="subtitle">Oct – Dec 2021 · 1,806 email submissions · Monthly cohort basis</p>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">Total Email Submissions</div>
+      <div class="value purple">1,806</div>
+      <div class="delta neutral">Oct–Dec 2021</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Total MQLs</div>
+      <div class="value green">889</div>
+      <div class="delta neutral">49.2% of emails</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Total SQLs</div>
+      <div class="value orange">428</div>
+      <div class="delta neutral">48.1% of MQLs</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Email → MQL (Oct)</div>
+      <div class="value green">52.6%</div>
+      <div class="delta down">↓ 43.1% in Dec</div>
+    </div>
+    <div class="kpi">
+      <div class="label">MQL → SQL (Oct)</div>
+      <div class="value orange">50.0%</div>
+      <div class="delta down">↓ 44.1% in Dec</div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h2>Volume Over Time</h2>
+      <canvas id="volumeChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>Conversion Rates Over Time</h2>
+      <canvas id="conversionChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <h2>Overall Funnel (Oct–Dec 2021 Combined)</h2>
+    <div id="funnelViz" class="funnel-wrap"></div>
+  </div>
+
+  <div class="insight-box alert">
+    <div class="tag">⚠ Key Finding</div>
+    <p><strong>December shows a significant drop in Email → MQL conversion (52.6% → 43.1%)</strong>, a 9.5 percentage point decline. This is the most notable anomaly in the dataset and points to a data quality or pipeline issue rather than a demand-side shift. MQL → SQL also dropped from 50% to 44.1%.</p>
+  </div>
+  <div class="insight-box info">
+    <div class="tag">Biggest Opportunity</div>
+    <p><strong>MQL → SQL conversion is the highest-leverage lever.</strong> At ~48% conversion, nearly half of qualified prospects who show intent never become SQLs. Even a 10pp improvement here (+$X in pipeline) outpaces fixing Email → MQL given MQLs represent already-verified, high-intent users. The MQL → SQL gap likely reflects friction in the handoff to sales or self-serve application UX.</p>
+  </div>
+</div>
+
+<!-- ===== PAGE 2: MONTHLY COHORTS ===== -->
+<div class="page" id="page-cohorts">
+  <h1>Monthly Cohort Breakdown</h1>
+  <p class="subtitle">Stage-by-stage view with conversion rates for each month</p>
+
+  <div class="month-selector">
+    <div class="month-btn active" onclick="selectMonth('all', this)">All Months</div>
+    <div class="month-btn" onclick="selectMonth('2021-10', this)">Oct 2021</div>
+    <div class="month-btn" onclick="selectMonth('2021-11', this)">Nov 2021</div>
+    <div class="month-btn" onclick="selectMonth('2021-12', this)">Dec 2021</div>
+  </div>
+
+  <!-- Funnel by month -->
+  <div class="chart-card" style="margin-bottom:1.5rem;">
+    <h2>Funnel Stages by Month</h2>
+    <canvas id="monthlyFunnelChart" style="max-height:280px;"></canvas>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h2>Email → MQL Rate by Month</h2>
+      <canvas id="e2mChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>MQL → SQL Rate by Month</h2>
+      <canvas id="m2sChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <h2>Detailed Cohort Table</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Emails Collected</th>
+          <th>MQLs</th>
+          <th>SQLs</th>
+          <th>Email → MQL %</th>
+          <th>MQL → SQL %</th>
+          <th>Email → SQL %</th>
+          <th>MoM Change (E→MQL)</th>
+        </tr>
+      </thead>
+      <tbody id="cohortTableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="insight-box info">
+    <div class="tag">Note on Website Visitor Data</div>
+    <p>The dataset begins at "Email Collected" — <strong>website visitor counts are not included</strong>, so the top-of-funnel metric (Visitor → Email Collected rate) cannot be calculated from this data. This is a key gap. We'd need web analytics (Google Analytics, Mixpanel, etc.) to compute it.</p>
+  </div>
+</div>
+
+<!-- ===== PAGE 3: DECEMBER ===== -->
+<div class="page" id="page-december">
+  <h1>December Anomaly Deep Dive</h1>
+  <p class="subtitle">What happened to conversion rates in December 2021?</p>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">Dec Email Volume</div>
+      <div class="value purple">647</div>
+      <div class="delta up">↑ +13.5% vs Nov (570)</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Dec MQL Count</div>
+      <div class="value red">279</div>
+      <div class="delta down">↓ −7.0% vs Nov (300)</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Dec Email→MQL</div>
+      <div class="value red">43.1%</div>
+      <div class="delta down">↓ −9.5pp vs Nov (52.6%)</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Dec MQL→SQL</div>
+      <div class="value red">44.1%</div>
+      <div class="delta down">↓ −5.9pp vs Nov (50.0%)</div>
+    </div>
+  </div>
+
+  <div class="chart-card" style="margin-bottom:1.5rem;">
+    <h2>Email Volume vs. MQL Count — The Divergence</h2>
+    <canvas id="decemberChart" style="max-height:300px;"></canvas>
+  </div>
+
+  <div class="insight-box alert">
+    <div class="tag">Root Cause Analysis</div>
+    <p><strong>The volume went UP but MQL rate went DOWN — this is the key signal.</strong> December had 647 email submissions (+13.5% vs November's 570), yet MQLs dropped to 279 from 300. Two possible explanations:</p>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1.5rem;">
+    <div class="insight-box alert" style="margin-bottom:0;">
+      <div class="tag">Hypothesis A (Most Likely)</div>
+      <p><strong>Holiday / seasonal traffic brought in lower-quality leads.</strong> December brings end-of-year campaigns, holiday promotions, and curiosity-driven visitors who don't represent qualified businesses. The extra 77 email submissions vs. November were disproportionately from unqualified companies (below the $75K bank balance threshold). This is a supply-mix shift, not a funnel breakdown.</p>
+    </div>
+    <div class="insight-box alert" style="margin-bottom:0;">
+      <div class="tag">Hypothesis B</div>
+      <p><strong>MQL verification pipeline delays in December.</strong> If the MQL qualification check (bank balance verification) had processing delays or lower staffing over the holiday period, some leads that <em>should</em> be MQLs may have been marked as non-MQL or not yet processed by month-end close. This would also explain why SQL rate fell — fewer MQLs in the pipeline → fewer SQLs.</p>
+    </div>
+  </div>
+
+  <div class="insight-box info">
+    <div class="tag">What's Specific</div>
+    <p>The Email → MQL drop (43.1% vs 52.6% baseline) is a <strong>9.5pp decline</strong>. With 647 emails, if December had held the baseline 52.6% rate, we would have expected <strong>340 MQLs</strong> instead of 279 — that's <strong>61 missing MQLs</strong>. At the Nov MQL→SQL rate of 50%, those 61 MQLs would have yielded ~30 additional SQLs. <strong>December underdelivered by ~30 SQLs</strong> relative to the run-rate.</p>
+  </div>
+
+  <div class="insight-box success">
+    <div class="tag">Recommended Action</div>
+    <p>Check the <strong>traffic source mix</strong> for December (paid vs. organic, campaign tags) to confirm whether a holiday campaign drove low-quality volume. If verified, implement <strong>traffic source–based lead scoring</strong> and suppress or segment low-intent December campaign traffic. Also audit the MQL verification SLA to detect any holiday processing delays.</p>
+  </div>
+</div>
+
+<!-- ===== PAGE 4: EXPERIMENTS ===== -->
+<div class="page" id="page-experiments">
+  <h1>Growth Experiments</h1>
+  <p class="subtitle">One experiment per funnel stage · Prioritized by expected impact</p>
+
+  <div class="exp-grid">
+    <div class="exp-card">
+      <div class="stage-tag tag-visitor">Stage 1 · Visitor → Email</div>
+      <h3>Progressive Disclosure Email Capture with Value-First Preview</h3>
+      <p>Replace the current email wall with a "preview" experience: show 30 seconds of personalized value (estimated savings, peer benchmarks by company size/industry) before asking for an email. The ask becomes "unlock your full report" rather than a cold form. Add exit-intent trigger as a secondary capture point.</p>
+      <div class="metrics">
+        <div class="metric"><div class="ml">Expected lift</div><div class="mv">+15–25% email capture rate</div></div>
+        <div class="metric"><div class="ml">Effort</div><div class="mv">Medium (4–6 weeks)</div></div>
+        <div class="metric"><div class="ml">Risk</div><div class="mv">Medium</div></div>
+      </div>
+    </div>
+    <div class="exp-card">
+      <div class="stage-tag tag-email">Stage 2 · Email → MQL</div>
+      <h3>Real-Time Company Qualification Signal in the Email Form</h3>
+      <p>Use the company domain from a work email to surface a real-time "looks like a match" or "let's check eligibility" message before submission. Pre-qualify via Clearbit/ZoomInfo enrichment at form submission — reducing unqualified submissions while increasing confidence for qualified users. Bonus: filter out personal emails (gmail, yahoo) at form level.</p>
+      <div class="metrics">
+        <div class="metric"><div class="ml">Expected lift</div><div class="mv">+8–12pp MQL rate</div></div>
+        <div class="metric"><div class="ml">Effort</div><div class="mv">Medium (3–5 weeks)</div></div>
+        <div class="metric"><div class="ml">Risk</div><div class="mv">Low-Medium</div></div>
+      </div>
+    </div>
+    <div class="exp-card">
+      <div class="stage-tag tag-mql">Stage 3 · MQL → SQL</div>
+      <h3>Instant Scheduling + Guided Self-Serve Application Flow</h3>
+      <p>For MQLs, replace the current handoff (likely an email follow-up sequence) with an immediate post-qualification page offering: (a) a Calendly-style instant demo booking with &lt;24h slots, or (b) a guided 5-step self-serve application with progress save. The goal is to capture intent at peak enthusiasm immediately after qualification, not 48h later via cold email.</p>
+      <div class="metrics">
+        <div class="metric"><div class="ml">Expected lift</div><div class="mv">+10–20pp SQL rate</div></div>
+        <div class="metric"><div class="ml">Effort</div><div class="mv">Low-Medium (2–4 weeks)</div></div>
+        <div class="metric"><div class="ml">Risk</div><div class="mv">Low</div></div>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin-bottom:1rem;">Deep Dive: Experiments 2 & 3</h2>
+
+  <div class="chart-card" style="margin-bottom:1.5rem;">
+    <h2>Projected Impact Comparison</h2>
+    <canvas id="experimentChart" style="max-height:280px;"></canvas>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-bottom:1.5rem;">
+    <div class="insight-box info" style="margin-bottom:0;">
+      <div class="tag">Experiment 2 · Email → MQL</div>
+      <p><strong>Reasonable conversion lift: +8–12pp</strong> (from ~48% to ~56–60%).<br><br>
+      <strong>Why it works:</strong> By surfacing qualification signals inline, we shift from a "spray and pray" collection model to intention-verified submission. Users from qualifying companies get positive reinforcement; users with personal emails or sub-threshold companies self-select out. This improves MQL rate without reducing email volume from quality prospects.<br><br>
+      <strong>Key risks:</strong> (1) Form friction could reduce total email submissions by 5–15%; (2) Clearbit/enrichment data has coverage gaps (~20–30% miss rate); (3) False negatives could reject valid prospects.</p>
+    </div>
+    <div class="insight-box success" style="margin-bottom:0;">
+      <div class="tag">Experiment 3 · MQL → SQL</div>
+      <p><strong>Reasonable conversion lift: +10–20pp</strong> (from ~48% to ~58–68%).<br><br>
+      <strong>Why it works:</strong> The MQL → SQL gap is fundamentally a timing and friction problem. When prospects qualify, they're at peak intent. Every hour of delay cools that intent. Instant scheduling removes the "I'll do it later" escape hatch. A guided self-serve application removes the need for a human touchpoint entirely for lower-complexity prospects.<br><br>
+      <strong>Key risks:</strong> (1) Sales team buy-in needed for scheduling tool; (2) Self-serve flow must be well-designed or it increases drop-off; (3) Some prospects may prefer async email outreach.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 5: DECISION ===== -->
+<div class="page" id="page-decision">
+  <h1>Decision & Data Gaps</h1>
+  <p class="subtitle">Which experiment to run · What we're missing</p>
+
+  <div class="decision-box">
+    <h2>Recommendation: Run Experiment 3 (MQL → SQL)</h2>
+    <p>Given bandwidth constraints, <strong>Experiment 3 (Instant Scheduling + Guided Self-Serve for MQLs) is the clear choice.</strong></p>
+    <p>The rationale: MQLs are already verified, high-intent, and expensive to acquire. Losing ~50% of them at the final handoff is the single largest dollar leak in the funnel. Fixing it requires no third-party data dependency, is lower-risk, and the change is reversible. Expected lift of 10–20pp on a baseline ~48% rate, applied to ~300 MQLs/month, yields 30–60 additional SQLs per month — the highest incremental SQL output of any experiment.</p>
+    <p>Experiment 2 is compelling but has a dependency on enrichment data quality and introduces form friction risk that could reduce top-of-funnel volume — a harder tradeoff to manage with limited bandwidth.</p>
+  </div>
+
+  <div class="vs-grid">
+    <div class="vs-card winner">
+      <h3>Experiment 3 — MQL → SQL <span class="winner-badge">PICK THIS</span></h3>
+      <ul>
+        <li>Highest SQL impact (30–60 SQLs/month uplift)</li>
+        <li>No third-party data dependency</li>
+        <li>Lowest execution risk</li>
+        <li>Reversible if conversion drops</li>
+        <li>Acts on already-qualified, high-intent users</li>
+        <li>Quick to prototype (2–4 weeks)</li>
+      </ul>
+    </div>
+    <div class="vs-card loser">
+      <h3>Experiment 2 — Email → MQL</h3>
+      <ul>
+        <li>Good SQL impact but further upstream</li>
+        <li>Requires Clearbit/enrichment integration</li>
+        <li>Risk of reducing email submission volume</li>
+        <li>Enrichment has ~20–30% miss rate</li>
+        <li>Longer feedback loop to measure</li>
+        <li>Medium effort (3–5 weeks)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 style="margin-bottom:1rem;">What We're Missing</h2>
+  <div class="missing-grid">
+    <div class="missing-item">
+      <strong>Website Visitor Counts</strong>
+      Top-of-funnel metric (Visitor → Email rate) is entirely absent. We need session data from Google Analytics or Mixpanel to close this gap.
+    </div>
+    <div class="missing-item">
+      <strong>Traffic Source / UTM Tags</strong>
+      Without knowing whether leads came from paid, organic, referral, or direct, we can't diagnose the December anomaly or optimize acquisition mix.
+    </div>
+    <div class="missing-item">
+      <strong>Time-to-SQL</strong>
+      How long does it take an MQL to become an SQL? Knowing lag time would validate whether timing friction is the core problem and size the opportunity for instant scheduling.
+    </div>
+    <div class="missing-item">
+      <strong>MQL Drop Reason</strong>
+      Why do ~50% of MQLs not convert to SQL? Is it sales capacity, prospect disengagement, price sensitivity, or competitive loss? A simple exit survey or CRM disposition tag would clarify enormously.
+    </div>
+    <div class="missing-item">
+      <strong>Industry-Level Conversion</strong>
+      The dataset has Tech vs. Non-Tech, but no conversion breakdown by industry. If Tech companies convert at 2x the rate, the optimal strategy (traffic source, messaging) would differ significantly.
+    </div>
+    <div class="missing-item">
+      <strong>Revenue / ACV per SQL</strong>
+      Without deal value data, we can't calculate the dollar impact of conversion improvements. A 10pp lift means very different things if average ACV is $10K vs. $100K.
+    </div>
+    <div class="missing-item">
+      <strong>Email Form Placement Data</strong>
+      Which pages / forms are collecting the most (and highest-quality) emails? Without this, Experiment 1 (progressive disclosure) has no starting point for where to intervene first.
+    </div>
+    <div class="missing-item">
+      <strong>Longer Time Series</strong>
+      Three months of data is too short to distinguish seasonality from trends. 12+ months would let us model expected December seasonality vs. a genuine conversion problem.
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const months = ['Oct 2021', 'Nov 2021', 'Dec 2021'];
+const emails = [589, 570, 647];
+const mqls =   [310, 300, 279];
+const sqls =   [155, 150, 123];
+const e2m =    [52.6, 52.6, 43.1];
+const m2s =    [50.0, 50.0, 44.1];
+
+// Chart defaults
+Chart.defaults.color = '#666';
+Chart.defaults.borderColor = '#2a2a3a';
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+
+const tooltipStyle = {
+  backgroundColor: '#1e1e2e',
+  borderColor: '#3a3a5a',
+  borderWidth: 1,
+  titleColor: '#e8e8f0',
+  bodyColor: '#b0b0c8',
+  padding: 12,
+};
+
+// ===== VOLUME CHART =====
+new Chart(document.getElementById('volumeChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Emails Collected', data: emails, backgroundColor: '#6c63ff88', borderColor: '#6c63ff', borderWidth: 1.5 },
+      { label: 'MQLs', data: mqls, backgroundColor: '#34d39988', borderColor: '#34d399', borderWidth: 1.5 },
+      { label: 'SQLs', data: sqls, backgroundColor: '#fb923c88', borderColor: '#fb923c', borderWidth: 1.5 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'bottom' }, tooltip: { ...tooltipStyle } },
+    scales: { x: { grid: { color: '#2a2a3a' } }, y: { grid: { color: '#2a2a3a' }, beginAtZero: true } }
+  }
+});
+
+// ===== CONVERSION CHART =====
+new Chart(document.getElementById('conversionChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Email → MQL %', data: e2m, borderColor: '#60a5fa', backgroundColor: '#60a5fa22', tension: 0.3, fill: true, pointRadius: 5 },
+      { label: 'MQL → SQL %', data: m2s, borderColor: '#34d399', backgroundColor: '#34d39922', tension: 0.3, fill: true, pointRadius: 5 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'bottom' }, tooltip: { ...tooltipStyle, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}%` } } },
+    scales: {
+      x: { grid: { color: '#2a2a3a' } },
+      y: { grid: { color: '#2a2a3a' }, min: 30, max: 70, ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+
+// ===== FUNNEL VIZ =====
+function buildFunnel(emailsN, mqlsN, sqlsN) {
+  const totalEmails = emailsN.reduce((a,b)=>a+b,0);
+  const totalMqls = mqlsN.reduce((a,b)=>a+b,0);
+  const totalSqls = sqlsN.reduce((a,b)=>a+b,0);
+  const e2mRate = (totalMqls/totalEmails*100).toFixed(1);
+  const m2sRate = (totalSqls/totalMqls*100).toFixed(1);
+
+  const stages = [
+    { label: 'Email Collected', value: totalEmails, color: '#6c63ff', width: 100 },
+    { label: 'MQL', value: totalMqls, color: '#60a5fa', width: Math.round(totalMqls/totalEmails*100) },
+    { label: 'SQL', value: totalSqls, color: '#34d399', width: Math.round(totalSqls/totalEmails*100) },
+  ];
+  const rates = [e2mRate + '% Email → MQL', m2sRate + '% MQL → SQL'];
+
+  const wrap = document.getElementById('funnelViz');
+  wrap.innerHTML = '';
+  stages.forEach((s, i) => {
+    const stage = document.createElement('div');
+    stage.className = 'funnel-stage';
+    const bar = document.createElement('div');
+    bar.className = 'funnel-bar';
+    bar.style.cssText = `width:${s.width}%; background:${s.color}22; border:1.5px solid ${s.color}; color:${s.color};`;
+    bar.textContent = `${s.label}: ${s.value.toLocaleString()}`;
+    stage.appendChild(bar);
+    wrap.appendChild(stage);
+    if (i < rates.length) {
+      const arrow = document.createElement('div');
+      arrow.className = 'funnel-arrow';
+      arrow.innerHTML = `<span class="rate">↓ ${rates[i]}</span>`;
+      wrap.appendChild(arrow);
+    }
+  });
+}
+buildFunnel(emails, mqls, sqls);
+
+// ===== MONTHLY FUNNEL CHART =====
+new Chart(document.getElementById('monthlyFunnelChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Emails Collected', data: emails, backgroundColor: '#6c63ff', borderRadius: 4 },
+      { label: 'MQLs', data: mqls, backgroundColor: '#60a5fa', borderRadius: 4 },
+      { label: 'SQLs', data: sqls, backgroundColor: '#34d399', borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'bottom' }, tooltip: { ...tooltipStyle } },
+    scales: { x: { grid: { color: '#2a2a3a' } }, y: { grid: { color: '#2a2a3a' }, beginAtZero: true } }
+  }
+});
+
+// ===== E2M CHART =====
+new Chart(document.getElementById('e2mChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{ label: 'Email → MQL %', data: e2m, backgroundColor: ['#60a5fa', '#60a5fa', '#f87171'], borderRadius: 4 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { ...tooltipStyle, callbacks: { label: ctx => ` ${ctx.parsed.y}%` } } },
+    scales: {
+      x: { grid: { color: '#2a2a3a' } },
+      y: { grid: { color: '#2a2a3a' }, min: 30, max: 65, ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+
+// ===== M2S CHART =====
+new Chart(document.getElementById('m2sChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{ label: 'MQL → SQL %', data: m2s, backgroundColor: ['#34d399', '#34d399', '#f87171'], borderRadius: 4 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { ...tooltipStyle, callbacks: { label: ctx => ` ${ctx.parsed.y}%` } } },
+    scales: {
+      x: { grid: { color: '#2a2a3a' } },
+      y: { grid: { color: '#2a2a3a' }, min: 30, max: 65, ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+
+// ===== COHORT TABLE =====
+const tableData = [
+  { month: 'Oct 2021', emails: 589, mqls: 310, sqls: 155, e2m: 52.6, m2s: 50.0, momChange: null },
+  { month: 'Nov 2021', emails: 570, mqls: 300, sqls: 150, e2m: 52.6, m2s: 50.0, momChange: 0.0 },
+  { month: 'Dec 2021', emails: 647, mqls: 279, sqls: 123, e2m: 43.1, m2s: 44.1, momChange: -9.5 },
+];
+const tbody = document.getElementById('cohortTableBody');
+tableData.forEach(r => {
+  const e2s = (r.sqls/r.emails*100).toFixed(1);
+  const momHtml = r.momChange === null ? '<span class="pill neutral">—</span>'
+    : r.momChange < 0 ? `<span class="pill down">↓ ${Math.abs(r.momChange)}pp</span>`
+    : r.momChange > 0 ? `<span class="pill up">↑ ${r.momChange}pp</span>`
+    : '<span class="pill neutral">flat</span>';
+  const decClass = r.month === 'Dec 2021' ? 'highlight' : '';
+  tbody.innerHTML += `<tr>
+    <td><strong>${r.month}</strong></td>
+    <td>${r.emails.toLocaleString()}</td>
+    <td>${r.mqls.toLocaleString()}</td>
+    <td>${r.sqls.toLocaleString()}</td>
+    <td class="${decClass}">${r.e2m}%</td>
+    <td class="${decClass}">${r.m2s}%</td>
+    <td>${e2s}%</td>
+    <td>${momHtml}</td>
+  </tr>`;
+});
+
+// ===== DECEMBER CHART =====
+new Chart(document.getElementById('decemberChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Emails Collected', data: emails, backgroundColor: '#6c63ff88', borderColor: '#6c63ff', borderWidth: 1.5, yAxisID: 'y' },
+      { label: 'MQLs', data: mqls, backgroundColor: '#f8717188', borderColor: '#f87171', borderWidth: 1.5, yAxisID: 'y' },
+      { type: 'line', label: 'Email → MQL %', data: e2m, borderColor: '#fbbf24', backgroundColor: 'transparent', pointRadius: 5, tension: 0.3, yAxisID: 'y2' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'bottom' }, tooltip: { ...tooltipStyle } },
+    scales: {
+      y: { grid: { color: '#2a2a3a' }, beginAtZero: true, position: 'left' },
+      y2: { grid: { display: false }, min: 30, max: 70, position: 'right', ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+
+// ===== EXPERIMENT IMPACT CHART =====
+new Chart(document.getElementById('experimentChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Current\nMQL→SQL', 'Exp 3 Low\n(+10pp)', 'Exp 3 High\n(+20pp)', 'Current\nEmail→MQL', 'Exp 2 Low\n(+8pp)', 'Exp 2 High\n(+12pp)'],
+    datasets: [{
+      label: 'Conversion Rate (%)',
+      data: [48.1, 58.1, 68.1, 49.2, 57.2, 61.2],
+      backgroundColor: ['#3a3a5a', '#34d39988', '#34d399', '#3a3a5a', '#60a5fa88', '#60a5fa'],
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { ...tooltipStyle, callbacks: { label: ctx => ` ${ctx.parsed.y}%` } } },
+    scales: {
+      x: { grid: { color: '#2a2a3a' } },
+      y: { grid: { color: '#2a2a3a' }, min: 30, max: 80, ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+
+// ===== NAV =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===== MONTH SELECTOR =====
+function selectMonth(month, btn) {
+  document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Could filter funnel — for now just visual feedback
+}
+</script>
+</body>
+</html>
