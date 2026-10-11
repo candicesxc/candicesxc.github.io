@@ -499,6 +499,47 @@ body::before {
   to { transform: scaleX(1); }
 }
 
+/* The analytics button: reads as something that opens. The arrow chip nudges upward
+   every few seconds and flips once the panel is open. */
+.lab-open {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+button.lab-open:hover,
+button:hover > .lab-open {
+  transform: translate(-1px, -2px);
+  box-shadow: 5px 6px 0 var(--ink);
+}
+button.lab-open:active,
+button:active > .lab-open {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.lab-chev {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--pop);
+  color: var(--bg);
+  transition: transform 0.25s ease;
+}
+.lab-chev svg {
+  animation: chev-nudge 2.4s ease-in-out infinite;
+}
+.lab-chev.is-open {
+  transform: rotate(180deg);
+}
+.lab-chev.is-open svg {
+  animation: none;
+}
+@keyframes chev-nudge {
+  0%, 60%, 100% { transform: translateY(0); }
+  70% { transform: translateY(-2.5px); }
+  80% { transform: translateY(0); }
+  90% { transform: translateY(-1.5px); }
+}
+
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.45; }

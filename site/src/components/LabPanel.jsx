@@ -14,6 +14,17 @@ function Row({ label, value, children }) {
   )
 }
 
+// The up-arrow that says "this opens"; it flips when the panel is open.
+export function LabChevron({ open, className = '' }) {
+  return (
+    <span className={`lab-chev ${open ? 'is-open' : ''} ${className}`} aria-hidden="true">
+      <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2.5 7.5 6 4l3.5 3.5" />
+      </svg>
+    </span>
+  )
+}
+
 const btn =
   'label min-h-[40px] shrink-0 rounded-full border-[1.5px] border-ink px-3 font-medium transition-colors hover:bg-pop hover:text-bg disabled:opacity-50'
 
@@ -27,10 +38,11 @@ export default function LabPanel({ open, onOpen, variant, onVariant }) {
         type="button"
         onClick={() => onOpen(!open)}
         aria-expanded={open}
-        className="label fixed bottom-5 right-5 z-30 hidden min-h-[44px] items-center gap-2 rounded-full border-[1.5px] border-ink bg-card px-4 font-medium shadow-[3px_3px_0_var(--ink)] md:flex"
+        className="lab-open label fixed bottom-5 right-5 z-30 hidden min-h-[46px] items-center gap-2.5 rounded-full border-[1.5px] border-ink bg-card pl-4 pr-2 font-medium shadow-[4px_4px_0_var(--ink)] md:flex"
       >
         <span className="h-2 w-2 rounded-full bg-pop" style={{ animation: 'pulse-dot 1.4s ease-in-out infinite' }} />
         analytics · {lab.clicks} clicks
+        <LabChevron open={open} className="h-7 w-7" />
       </button>
 
       {open && (

@@ -1,10 +1,11 @@
 import { useEffect, useState, useSyncExternalStore } from 'react'
+import { LabChevron } from './LabPanel'
 import { FUNNEL } from '../content'
 import { scrollToId } from '../lib/scroll'
 import { getLab, subscribe } from '../lib/lab'
 
 // Shows which funnel stage is on screen: side rail on desktop, bottom bar on phone.
-export default function FunnelProgress({ onOpenLab }) {
+export default function FunnelProgress({ onOpenLab, labOpen }) {
   const [active, setActive] = useState(null)
   const { clicks } = useSyncExternalStore(subscribe, getLab)
 
@@ -65,8 +66,17 @@ export default function FunnelProgress({ onOpenLab }) {
       >
         <div className="label mb-1.5 flex items-center justify-between">
           <span>{current ? `${current.n} ${current.name}` : '00 top of funnel'}</span>
-          <button type="button" onClick={onOpenLab} className="label -my-2 min-h-[40px] font-medium text-pop">
-            analytics · {clicks} clicks
+          {/* A proper little button: outlined pill with an arrow that flips when open */}
+          <button
+            type="button"
+            onClick={onOpenLab}
+            aria-expanded={labOpen}
+            className="label -my-2 flex min-h-[40px] items-center font-medium"
+          >
+            <span className="lab-open flex h-[26px] items-center gap-1.5 rounded-full border-[1.5px] border-ink bg-card pl-2.5 pr-1 shadow-[2px_2px_0_var(--ink)]">
+              analytics · {clicks} clicks
+              <LabChevron open={labOpen} className="h-[18px] w-[18px]" />
+            </span>
           </button>
         </div>
         <div className="flex gap-1">

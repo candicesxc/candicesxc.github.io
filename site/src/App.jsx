@@ -85,7 +85,7 @@ export default function App() {
         <Contact />
       </main>
 
-      <FunnelProgress onOpenLab={() => setLabOpen((o) => !o)} />
+      <FunnelProgress onOpenLab={() => setLabOpen((o) => !o)} labOpen={labOpen} />
       <LabPanel open={labOpen} onOpen={setLabOpen} variant={variant} onVariant={switchVariant} />
     </>
   )
