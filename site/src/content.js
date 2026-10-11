@@ -17,9 +17,9 @@ export const STAGES = [
     name: 'Awareness',
     // **double asterisks** mark the key facts shown in red; [text](url) makes a link
     lines: [
-      'I was raised in **Shanghai** as the precious **only daughter** of a loving family.',
+      'I grew up in **Shanghai** as the cherished **only daughter** of a loving family.',
       "I wasn't the straight A kiddo but was **dramatic** enough to light the room up.",
-      'I moved to **NYC** to pursue my dream in media at **NYU**.',
+      'I moved to **New York City** to pursue my dream in media at **NYU**.',
     ],
     // Ordered youngest (1) to most recent (9); regenerate with scripts/chapter-photos.py
     photos: Array.from({ length: 9 }, (_, i) => `/photos/ch1/${i + 1}.webp`),

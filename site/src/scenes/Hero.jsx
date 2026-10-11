@@ -77,7 +77,7 @@ export default function Hero() {
             <a href="https://ramp.com" target="_blank" rel="noopener noreferrer" className={link}>
               @Ramp
             </a>
-            . Previously I worked in diverse marketing roles at unicorn startups and big tech. Oh, and I'm a{' '}
+            . Before this, I was a full-stack marketer across unicorns and big tech. Oh, and I'm a{' '}
             <a href="https://som.yale.edu/" target="_blank" rel="noopener noreferrer" className={link}>
               Yale MBA
             </a>

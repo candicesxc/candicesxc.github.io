@@ -16,6 +16,7 @@ export const VISITED = [
   { id: '724', name: 'Spain', pin: [-3.7, 40.2] },
   { id: '276', name: 'Germany', pin: [10.4, 51] },
   { id: '826', name: 'UK', pin: [-1.5, 52.8] },
+  { id: '616', name: 'Poland', pin: [19.4, 52] },
   { id: '208', name: 'Denmark', pin: [9.5, 56] },
   { id: '124', name: 'Canada', pin: [-106, 56] },
   { id: '704', name: 'Vietnam', pin: [106.5, 15] },
