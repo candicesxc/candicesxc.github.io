@@ -33,6 +33,15 @@ html {
   scroll-snap-type: y mandatory;
 }
 
+/* Phone browsers hide their toolbar as you scroll, making the visible area taller than a
+   screen (which is sized to the smaller, toolbar-showing height). Without this spacer the
+   last screen cannot scroll all the way to the top and sits lower than the others. */
+.page::after {
+  content: '';
+  display: block;
+  height: calc(100lvh - 100svh);
+}
+
 .screen {
   height: 100svh;
   overflow: hidden;

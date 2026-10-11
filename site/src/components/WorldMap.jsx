@@ -4,7 +4,10 @@ import { burst } from '../lib/lab'
 import Lightbox from './Lightbox'
 import useSeen from '../lib/useSeen'
 
+// Thumbnail radius in map units. Phones draw them large enough to tap.
 const PHOTO_R = 13
+const PHOTO_R_PHONE = 33
+const PHONE = '(max-width: 767px)'
 const byId = Object.fromEntries(map.pins.filter((p) => p.id).map((p) => [p.id, p]))
 
 // World map with visited countries lit up. They switch on one after another when the
@@ -15,6 +18,15 @@ export default function WorldMap({ className = '' }) {
   const box = useRef(null)
   const lit = useSeen(box, 0.4)
   const [tip, setTip] = useState(null)
+  const [phone, setPhone] = useState(() => window.matchMedia(PHONE).matches)
+  useEffect(() => {
+    const mq = window.matchMedia(PHONE)
+    const on = () => setPhone(mq.matches)
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+  const photoR = phone ? PHOTO_R_PHONE : PHOTO_R
+  const spot = (p) => (phone ? p.mxy : p.cxy)
   const [open, setOpen] = useState(null)
 
 
@@ -80,7 +92,7 @@ export default function WorldMap({ className = '' }) {
         <defs>
           {map.photos.map((p, i) => (
             <clipPath key={p.name} id={`map-photo-${i}`}>
-              <circle cx={p.cxy[0]} cy={p.cxy[1]} r={PHOTO_R} />
+              <circle cx={spot(p)[0]} cy={spot(p)[1]} r={photoR} />
             </clipPath>
           ))}
         </defs>
@@ -113,7 +125,8 @@ export default function WorldMap({ className = '' }) {
         ))}
 
         {map.photos.map((p, i) => {
-          const r = PHOTO_R
+          const r = photoR
+          const [cx, cy] = spot(p)
           return (
             <g
               key={p.name}
@@ -126,19 +139,19 @@ export default function WorldMap({ className = '' }) {
               onClick={() => setOpen(p)}
               onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setOpen(p)}
             >
-              <line x1={p.xy[0]} y1={p.xy[1]} x2={p.cxy[0]} y2={p.cxy[1]} className="map-line" />
+              <line x1={p.xy[0]} y1={p.xy[1]} x2={cx} y2={cy} className="map-line" />
               <circle cx={p.xy[0]} cy={p.xy[1]} r="3.2" className="map-anchor" />
-              <circle cx={p.cxy[0]} cy={p.cxy[1]} r={r} className="map-ring" />
+              <circle cx={cx} cy={cy} r={r} className="map-ring" />
               <image
                 href={p.thumb}
-                x={p.cxy[0] - r}
-                y={p.cxy[1] - r}
+                x={cx - r}
+                y={cy - r}
                 width={r * 2}
                 height={r * 2}
                 preserveAspectRatio="xMidYMid slice"
                 clipPath={`url(#map-photo-${i})`}
               />
-              <circle data-pin={`photo:${p.name}`} cx={p.cxy[0]} cy={p.cxy[1]} r={r} className="map-frame" />
+              <circle data-pin={`photo:${p.name}`} cx={cx} cy={cy} r={r} className="map-frame" />
             </g>
           )
         })}

@@ -37,6 +37,7 @@ const out = {
     name: p.name,
     xy: xy(p.at),
     cxy: xy(p.callout),
+    mxy: p.phone,
     thumb: `/photos/ch5/${p.file}-thumb.webp`,
     full: `/photos/ch5/${p.file}.webp`,
   })),

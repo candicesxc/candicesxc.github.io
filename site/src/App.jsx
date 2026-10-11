@@ -76,7 +76,7 @@ export default function App() {
         </nav>
       </header>
 
-      <main className="relative z-10">
+      <main className="page relative z-10">
         <Hero />
         {STAGES.map((s) =>
           s.lines ? <StoryStage key={s.id} stage={s} /> : <StageStub key={s.id} stage={s} />,
