@@ -150,6 +150,61 @@ body::before {
   animation: ring 0.6s ease-out forwards;
 }
 
+/* First-screen scroll cue: floats, pulses a ring, and its arrow keeps dropping */
+.scroll-cue {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink);
+  background: var(--pop);
+  color: var(--bg);
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: 3px 3px 0 var(--ink);
+  animation: cue-float 1.8s ease-in-out infinite;
+}
+
+.scroll-cue::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 2px solid var(--pop);
+  pointer-events: none;
+  animation: cue-ring 1.8s ease-out infinite;
+}
+
+.scroll-cue-arrow {
+  display: inline-block;
+  font-size: 17px;
+  line-height: 1;
+  animation: cue-arrow 0.9s ease-in-out infinite;
+}
+
+.scroll-cue:hover {
+  animation-play-state: paused;
+  background: var(--ink);
+}
+
+@keyframes cue-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes cue-ring {
+  0% { opacity: 0.9; transform: scale(1); }
+  70%, 100% { opacity: 0; transform: scale(1.18, 1.5); }
+}
+
+@keyframes cue-arrow {
+  0%, 100% { transform: translateY(-3px); }
+  50% { transform: translateY(4px); }
+}
+
 /* Phone hero funnel: faint behind the copy, solid right below it. --text-end is where
    the copy ends, measured in Hero.jsx. */
 @media (max-width: 767px) {

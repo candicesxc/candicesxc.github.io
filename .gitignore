@@ -26,3 +26,7 @@ build/
 .env.local
 .env.*.local
 
+
+# Sync-conflict copies made by iCloud/Finder ("name 2.ext", "folder 2")
+* 2.*
+* 2/

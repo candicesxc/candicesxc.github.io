@@ -61,19 +61,6 @@ export default function Hero() {
     return () => ro.disconnect()
   }, [])
 
-  const cue = (className) => (
-    <button
-      type="button"
-      onClick={() => scrollToId('awareness')}
-      className={`label min-h-[44px] items-center gap-2 font-medium ${className}`}
-    >
-      <span className="inline-block text-base" style={{ animation: 'bob 1.2s ease-in-out infinite' }}>
-        ↓
-      </span>
-      scroll to enter the funnel
-    </button>
-  )
-
   return (
     <section id="top" ref={root} className="screen relative">
       <div className="relative z-10 flex h-full flex-col justify-between gap-3 px-6 pb-24 pt-20 md:gap-4 md:px-16 md:pb-24 md:pr-28 lg:px-24 lg:pr-32">
@@ -96,7 +83,6 @@ export default function Hero() {
             </a>
             .
           </p>
-          {cue('mt-[2.5svh] hidden md:flex')}
         </div>
 
         {/* The funnel fills the whole screen behind everything. On phones, where it runs
@@ -106,14 +92,23 @@ export default function Hero() {
           <FunnelCanvas />
         </div>
 
-        {/* Phones: the scroll cue sits down here with the tiles, leaving the middle of the
-            screen to the funnel. Desktop keeps it under the copy. */}
         <div>
-          {cue('mb-1 flex md:hidden')}
           <div className="grid grid-cols-3 gap-2 md:max-w-3xl md:gap-4 [@media(max-height:700px)]:hidden">
             <MetricCounter label="scroll depth" format={depth} tilt={-1.5} />
             <MetricCounter label="chance you say hi" format={sayHi} delta="↑ rising" tilt={1} />
             <MetricCounter label="visitors still here" format={stillHere} tilt={-0.5} />
+          </div>
+
+          {/* The "what next" cue: a bright, bobbing, pulsing pill at the bottom of the screen.
+              Phones: in the flow under the tiles. Desktop: pinned bottom-centre, so the
+              tiles keep their spot. The wrapper positions it; the button itself animates. */}
+          <div className="mt-3 flex justify-center md:absolute md:inset-x-0 md:bottom-5 md:mt-0">
+            <button type="button" onClick={() => scrollToId('awareness')} className="scroll-cue label">
+              scroll to enter the funnel
+              <span className="scroll-cue-arrow" aria-hidden="true">
+                ↓
+              </span>
+            </button>
           </div>
         </div>
       </div>

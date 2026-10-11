@@ -89,18 +89,69 @@
       }
     </script>
 
+    <!-- First paint. Runs before anything is drawn: marks the page as script-enabled so the
+         plain-text version below stays hidden (it is for search engines and no-script
+         visitors), settles the A/B variant so the background is right from the first frame,
+         and shows a loading screen that the app then takes over. -->
+    <script>
+      ;(function () {
+        var root = document.documentElement
+        var v = null
+        try {
+          v = localStorage.getItem('funnel-variant')
+          if (v !== 'a' && v !== 'b') {
+            v = Math.random() < 0.5 ? 'a' : 'b'
+            localStorage.setItem('funnel-variant', v)
+          }
+        } catch (e) {}
+        root.className += ' js'
+        if (v) root.setAttribute('data-variant', v)
+      })()
+    </script>
+    <style>
+      html { background: #fdf0d5; }
+      html[data-variant='b'] { background: #003049; }
+      .boot { display: none; }
+      html.js [data-fallback] { display: none; }
+      html.js .boot {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 0 24px;
+        font: 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #003049;
+      }
+      html.js[data-variant='b'] .boot { color: #fdf0d5; }
+      .boot i {
+        display: block;
+        width: 100%;
+        max-width: 320px;
+        height: 16px;
+        border: 1.5px solid currentColor;
+        border-radius: 999px;
+      }
+    </style>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Story+Script&family=Namdhinggo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-Y5yfTy7u.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CKpu7qSV.css">
+    <script type="module" crossorigin src="/assets/index-B5Gagfdq.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B_cFlaVr.css">
   </head>
   <body>
     <div id="root">
       <!-- Plain-text version of the page for search engines, AI assistants and anyone
-           without JavaScript. The app replaces it as soon as it loads. Keep it in step
+           without JavaScript. Visitors with scripts on never see it (hidden by the first-paint
+           styles in the head) and the app replaces it as soon as it loads. Keep it in step
            with src/content.js. -->
-      <main style="max-width: 44rem; margin: 0 auto; padding: 5rem 1.5rem; font-family: Georgia, serif; line-height: 1.5; color: #003049">
+      <div class="boot" aria-hidden="true">unwrapping one sweet story 🍬<i></i></div>
+      <main data-fallback style="max-width: 44rem; margin: 0 auto; padding: 5rem 1.5rem; font-family: Georgia, serif; line-height: 1.5; color: #003049">
         <h1>Hey! I'm Candice Shen.</h1>
         <p>
           I lead web marketing at <a href="https://ramp.com/">Ramp</a>. Previously I worked in diverse marketing
