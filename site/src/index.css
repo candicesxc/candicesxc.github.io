@@ -303,17 +303,29 @@ body::before {
   to { opacity: 0; transform: scale(1.7); }
 }
 
-/* Browser window beside stage copy: a third of the row by default, nearly half on
-   wide landscape screens, where the copy can wrap into a taller, narrower column. */
+/* Stage sentences: fade up once when the stage arrives, then stay fully solid */
+.stage-line {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.stage-line.is-seen {
+  opacity: 1;
+  transform: none;
+}
+
+/* Browser window beside stage copy: under a third of the row by default, a bit more on
+   wide landscape screens. Kept small enough that the copy stands taller than it. */
 @media (min-width: 768px) {
   .browser-side {
-    width: 34%;
+    width: 29%;
   }
 }
 
 @media (min-width: 1200px) and (min-aspect-ratio: 8/5) {
   .browser-side {
-    width: 46%;
+    width: 38%;
   }
 }
 
@@ -501,6 +513,11 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .stage-line {
+    opacity: 1;
+    transform: none;
+  }
+
   .stat-drop {
     transform: none;
   }

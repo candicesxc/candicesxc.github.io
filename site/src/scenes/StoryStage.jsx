@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
+import { useEffect, useRef, useState } from 'react'
 import BrowserFrame from '../components/BrowserFrame'
 import FlipCard from '../components/FlipCard'
 import PhotoBar from '../components/PhotoBar'
@@ -43,30 +42,29 @@ export default function StoryStage({ stage }) {
     ? 'text-[min(1.3rem,2.4svh)] md:text-[min(1.9rem,3.4svh)] [@media(max-height:740px)]:text-[2.35svh] md:[@media(max-height:740px)]:text-[3.2svh]'
     : 'text-[min(1.3rem,2.6svh)] md:text-[min(1.9rem,3.4svh)]'
 
+  // The sentences fade up once, one after another, when the stage first comes on screen,
+  // and always finish fully solid. (A scroll-linked fade can't be used here: each stage is
+  // exactly one screen, so the lower lines would never scroll far enough to finish.)
+  const [seen, setSeen] = useState(false)
   useEffect(() => {
-    const mm = gsap.matchMedia()
-    mm.add('(prefers-reduced-motion: no-preference)', () => {
-      // Each sentence lights up as it reaches the middle of the screen.
-      root.current.querySelectorAll('[data-line]').forEach((el) => {
-        gsap.fromTo(
-          el,
-          { opacity: 0.25, y: 16 },
-          {
-            opacity: 1,
-            y: 0,
-            ease: 'none',
-            scrollTrigger: { trigger: el, start: 'top 88%', end: 'top 55%', scrub: true },
-          },
-        )
-      })
-    }, root)
-    return () => mm.revert()
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setSeen(true), { threshold: 0.35 })
+    io.observe(root.current)
+    return () => io.disconnect()
   }, [])
 
   const copy = (
-    <div className={`max-w-6xl shrink-0 ${stage.barMax || stage.flip || stage.browser ? 'space-y-[1.8svh]' : 'space-y-[1svh]'}`}>
-      {stage.lines.map((line) => (
-        <p key={line} data-line className={`font-display font-semibold leading-snug ${size}`}>
+    <div
+      className={`shrink-0 ${stage.browser ? 'max-w-[36rem]' : 'max-w-6xl'} ${
+        stage.barMax || stage.flip || stage.browser ? 'space-y-[1.8svh]' : 'space-y-[1svh]'
+      }`}
+    >
+      {stage.lines.map((line, i) => (
+        <p
+          key={line}
+          data-line
+          className={`stage-line font-display font-semibold leading-snug ${size} ${seen ? 'is-seen' : ''}`}
+          style={{ transitionDelay: `${i * 140}ms` }}
+        >
           <Marked text={line} />
         </p>
       ))}
@@ -83,7 +81,12 @@ export default function StoryStage({ stage }) {
     >
       {stage.flip || stage.browser ? (
         // Copy on the left, flip card or browser window on the right; stacked on phones.
-        <div className="flex min-h-0 flex-1 flex-col gap-[2.5svh] md:flex-none md:flex-row md:items-center md:gap-12 lg:gap-20">
+        <div
+          className={`flex min-h-0 flex-1 flex-col md:flex-none md:flex-row md:items-center md:gap-12 lg:gap-20 ${
+            // Phones: the same generous gap between the copy and the image on every stage.
+            'gap-[5.5svh]'
+          }`}
+        >
           <div className="shrink-0 md:min-w-0 md:flex-1">
             <StagePill stage={stage} />
             {copy}
@@ -126,7 +129,7 @@ export default function StoryStage({ stage }) {
           {stage.map && (
             // The map gets every spare pixel. On phones it runs edge to edge and pans sideways.
             <>
-              <WorldMap className="-mx-6 mt-[2svh] min-h-0 flex-1 md:mx-0 md:mt-[1.5svh] md:max-h-[720px]" />
+              <WorldMap className="-mx-6 mt-[4.5svh] min-h-0 flex-1 md:mx-0 md:mt-[1.5svh] md:max-h-[720px]" />
               <p className="label mt-2 shrink-0 text-center text-muted md:hidden">← swipe the map →</p>
             </>
           )}

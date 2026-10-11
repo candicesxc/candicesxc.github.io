@@ -58,7 +58,7 @@ export default function PhotoBar({ photos, from, to, maxHeight, fitDesktop, zoom
       onPointerDown={stop}
       onWheel={stop}
       onKeyDown={stop}
-      className={`flex max-h-[var(--bar-max)] min-h-0 flex-1 flex-col ${maxHeight ? 'mt-[6svh]' : 'mt-[3svh]'} ${
+      className={`flex max-h-[var(--bar-max)] min-h-0 flex-1 flex-col ${maxHeight ? 'mt-[6svh]' : 'mt-[5.5svh] md:mt-[3svh]'} ${
         fitDesktop ? 'md:max-h-none md:flex-none' : ''
       }`}
       style={{ '--bar-max': `${maxHeight || 400}px` }}
