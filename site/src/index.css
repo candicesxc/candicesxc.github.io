@@ -1,0 +1,466 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #fdf0d5;
+  --ink: #003049;
+  --card: #fffaf0;
+  --line: rgba(0, 48, 73, 0.16);
+  --muted: #4f7892;
+  --pop: #c1121f;
+  --map-hover: #f4a261;
+  --heat-blend: multiply;
+}
+
+:root[data-variant='b'] {
+  --bg: #003049;
+  --ink: #fdf0d5;
+  --card: #0b4261;
+  --line: rgba(253, 240, 213, 0.2);
+  --muted: #9dbfd4;
+  --pop: #f4a261;
+  --map-hover: #fdf0d5;
+  --heat-blend: screen;
+}
+
+html {
+  background: var(--bg);
+  /* Every section is exactly one screen; a half scroll settles on the nearer one. */
+  scroll-snap-type: y mandatory;
+}
+
+.screen {
+  height: 100svh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Namdhinggo', Georgia, serif;
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Soft polka dots behind everything */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--line) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  opacity: 0.6;
+}
+
+.giant {
+  font-family: 'Namdhinggo', Georgia, serif;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.label {
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Small script asides next to the big type */
+.note {
+  font-family: 'Story Script', cursive;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--pop);
+}
+
+.panel {
+  background: var(--card);
+  border: 1.5px solid var(--ink);
+  border-radius: 22px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+/* One-off effects spawned from lib/lab.js */
+.fx-float {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  color: var(--pop);
+  font-weight: 500;
+  white-space: nowrap;
+  animation: float-up 0.8s ease-out forwards;
+}
+
+.fx-candy {
+  position: fixed;
+  top: -48px;
+  z-index: 60;
+  pointer-events: none;
+  font-size: 28px;
+  animation: candy-fall 2s linear forwards;
+}
+
+.fx-ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fx-ghost i {
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  background: var(--pop);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1.5px var(--ink);
+}
+
+.fx-ghost span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  white-space: nowrap;
+}
+
+.fx-ring {
+  position: fixed;
+  z-index: 59;
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border-radius: 50%;
+  border: 2px solid var(--pop);
+  pointer-events: none;
+  animation: ring 0.6s ease-out forwards;
+}
+
+/* Phone hero funnel: faint behind the copy, solid right below it. --text-end is where
+   the copy ends, measured in Hero.jsx. */
+@media (max-width: 767px) {
+  .hero-funnel {
+    --fade: linear-gradient(
+      to bottom,
+      transparent 6%,
+      rgba(0, 0, 0, 0.1) 18%,
+      rgba(0, 0, 0, 0.2) calc(var(--text-end, 55%) - 3%),
+      #000 calc(var(--text-end, 55%) + 3%)
+    );
+    -webkit-mask-image: var(--fade);
+    mask-image: var(--fade);
+  }
+}
+
+/* World map */
+.map-land {
+  fill: var(--card);
+  stroke: var(--ink);
+  stroke-width: 0.5;
+  stroke-opacity: 0.4;
+  stroke-linejoin: round;
+  transition: fill 0.6s ease;
+}
+
+.map-on {
+  cursor: pointer;
+}
+
+.map-on.is-lit {
+  fill: var(--pop);
+}
+
+.map-on.is-lit:hover {
+  fill: var(--map-hover);
+  transition-delay: 0s !important;
+  transition-duration: 0.15s;
+}
+
+.map-pin {
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.map-pin.is-lit {
+  opacity: 1;
+}
+
+.map-dot {
+  fill: var(--bg);
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+
+.map-line {
+  stroke: var(--ink);
+  stroke-width: 1;
+  stroke-dasharray: 2 2.5;
+}
+
+.map-anchor {
+  fill: #f4a261;
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+
+.map-frame {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+}
+
+.map-photo:hover .map-frame,
+.map-photo:focus-visible .map-frame {
+  stroke: var(--map-hover);
+  stroke-width: 2.6;
+}
+
+.map-photo:focus {
+  outline: none;
+}
+
+.map-ring {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: map-ping 2.2s ease-out infinite;
+}
+
+@keyframes map-ping {
+  from { opacity: 0.9; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.7); }
+}
+
+/* Browser window beside stage copy: a third of the row by default, nearly half on
+   wide landscape screens, where the copy can wrap into a taller, narrower column. */
+@media (min-width: 768px) {
+  .browser-side {
+    width: 34%;
+  }
+}
+
+@media (min-width: 1200px) and (min-aspect-ratio: 8/5) {
+  .browser-side {
+    width: 46%;
+  }
+}
+
+/* Photo strip and its slider */
+.photo-strip {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.photo-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.photo-arrow {
+  display: none;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: var(--card);
+  box-shadow: 3px 3px 0 var(--ink);
+  font-size: 18px;
+}
+
+@media (min-width: 768px) {
+  .photo-arrow {
+    display: flex;
+  }
+}
+
+.photo-range {
+  height: 44px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: grab;
+}
+
+.photo-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line);
+  border: 1.5px solid var(--ink);
+}
+
+.photo-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line);
+  border: 1.5px solid var(--ink);
+}
+
+.photo-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+  margin-top: -14px;
+  border-radius: 50%;
+  background: var(--pop);
+  border: 1.5px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.photo-range::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--pop);
+  border: 1.5px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.fx-bit {
+  position: fixed;
+  z-index: 60;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--pop);
+  pointer-events: none;
+  animation: bit 0.45s ease-out forwards;
+}
+
+/* Last-screen stat tiles: wait above the screen, then fall in and bounce to rest */
+.stat-drop {
+  transform: translateY(-120svh) rotate(-14deg);
+}
+
+.stat-drop.is-in {
+  animation: stat-drop 1.05s cubic-bezier(0.45, 0, 0.75, 0.6) calc(var(--i) * 0.16s) both;
+}
+
+@keyframes stat-drop {
+  0% { transform: translateY(-120svh) rotate(-14deg); animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5); }
+  58% { transform: translateY(0) rotate(4deg); animation-timing-function: ease-out; }
+  72% { transform: translateY(-26px) rotate(-3deg); animation-timing-function: ease-in; }
+  84% { transform: translateY(0) rotate(1.5deg); animation-timing-function: ease-out; }
+  92% { transform: translateY(-8px) rotate(0); animation-timing-function: ease-in; }
+  100% { transform: translateY(0) rotate(0); }
+}
+
+/* "Say hi" buttons: pop in one after another, then keep a little dance going */
+.say-pop {
+  display: inline-block;
+  opacity: 0;
+  transform: scale(0) translateY(30px);
+}
+
+.say-pop.is-in {
+  animation: say-pop 0.6s cubic-bezier(0.3, 1.7, 0.5, 1) calc(0.9s + var(--i) * 0.14s) both;
+}
+
+.say-dance {
+  animation: say-dance 1.8s ease-in-out calc(1.8s + var(--i) * 0.22s) infinite;
+}
+
+.say-dance:hover,
+.say-dance:focus-visible {
+  animation-play-state: paused;
+}
+
+@keyframes say-pop {
+  from { opacity: 0; transform: scale(0) translateY(30px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes say-dance {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  20% { transform: translateY(-7px) rotate(-5deg); }
+  40% { transform: translateY(0) rotate(4deg); }
+  60% { transform: translateY(-4px) rotate(-3deg); }
+  80% { transform: translateY(0) rotate(2deg); }
+}
+
+@keyframes card-shake {
+  0%, 100% { transform: rotate(0) translateX(0); }
+  15% { transform: rotate(-4deg) translateX(-5px); }
+  30% { transform: rotate(4deg) translateX(5px); }
+  45% { transform: rotate(-4deg) translateX(-5px); }
+  60% { transform: rotate(3deg) translateX(4px); }
+  80% { transform: rotate(-2deg) translateX(-2px); }
+}
+
+@keyframes bit {
+  to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
+}
+
+@keyframes loader-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+@keyframes wiggle {
+  0%, 55%, 100% { translate: 0; }
+  68% { translate: calc(9px * var(--dir, 1)); }
+  82% { translate: calc(-3px * var(--dir, 1)); }
+}
+
+@keyframes float-up {
+  from { opacity: 1; transform: translate(-50%, -100%); }
+  to { opacity: 0; transform: translate(-50%, -260%); }
+}
+
+@keyframes candy-fall {
+  to { transform: translateY(115vh) rotate(540deg); }
+}
+
+@keyframes ring {
+  from { opacity: 1; transform: scale(0.3); }
+  to { opacity: 0; transform: scale(1.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stat-drop {
+    transform: none;
+  }
+
+  .say-pop {
+    opacity: 1;
+    transform: none;
+  }
+
+  .say-dance {
+    animation: none;
+  }
+
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

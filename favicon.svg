@@ -1,26 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-  <!-- Stick -->
-  <rect x="46" y="55" width="8" height="40" rx="4" fill="#fdf0d5" stroke="#003049" stroke-width="2" />
-  
-  <!-- Lollipop Circle Group -->
-  <g transform="translate(50, 40)">
-    <!-- Base Circle (Cream) -->
-    <circle r="36" fill="#fdf0d5" stroke="#003049" stroke-width="2" />
-    
-    <!-- Red Swirls -->
-    <path d="M0 0 L0 -36 A 36 36 0 0 1 31.18 -18 Z" fill="#c1121f" />
-    <path d="M0 0 L31.18 18 A 36 36 0 0 1 0 36 Z" fill="#c1121f" />
-    <path d="M0 0 L-31.18 18 A 36 36 0 0 1 -31.18 -18 Z" fill="#c1121f" />
-    
-    <!-- Blue Swirls (filling gaps) -->
-    <path d="M0 0 L31.18 -18 A 36 36 0 0 1 31.18 18 Z" fill="#003049" />
-    <path d="M0 0 L0 36 A 36 36 0 0 1 -31.18 18 Z" fill="#003049" />
-    <path d="M0 0 L-31.18 -18 A 36 36 0 0 1 0 -36 Z" fill="#003049" />
-    
-    <!-- Center Dot (Cream) -->
-    <circle r="4" fill="#fdf0d5" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <g transform="rotate(-18 16 16)" stroke="#003049" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M11 16 2.5 9.5v13Z" fill="#669bbc"/>
+    <path d="M21 16l8.5-6.5v13Z" fill="#669bbc"/>
+    <circle cx="16" cy="16" r="9" fill="#c1121f"/>
+    <path d="M18.7 12.8a4.2 4.2 0 1 0 0 6.4" fill="none" stroke="#fdf0d5" stroke-width="2.6" stroke-linecap="round"/>
   </g>
-  
-  <!-- Gloss/Shine -->
-  <ellipse cx="35" cy="25" rx="8" ry="4" fill="#ffffff" opacity="0.4" transform="rotate(-45 35 25)" />
 </svg>

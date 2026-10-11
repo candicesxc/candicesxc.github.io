@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /work-samples/
+
+Sitemap: https://candiceshen.com/sitemap.xml
