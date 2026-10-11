@@ -422,6 +422,8 @@ body::before {
 }
 
 .stat-drop.is-in {
+  /* Resting place, so the tile is in position even if the drop animation never runs */
+  transform: none;
   animation: stat-drop 1.05s cubic-bezier(0.45, 0, 0.75, 0.6) calc(var(--i) * 0.16s) both;
 }
 
@@ -442,6 +444,9 @@ body::before {
 }
 
 .say-pop.is-in {
+  /* Resting state, so the button shows even if the pop animation never runs */
+  opacity: 1;
+  transform: none;
   animation: say-pop 0.6s cubic-bezier(0.3, 1.7, 0.5, 1) calc(0.9s + var(--i) * 0.14s) both;
 }
 
