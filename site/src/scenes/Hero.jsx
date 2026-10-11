@@ -63,7 +63,7 @@ export default function Hero() {
 
   return (
     <section id="top" ref={root} className="screen relative">
-      <div className="relative z-10 flex h-full flex-col justify-between gap-3 px-6 pb-24 pt-20 md:gap-4 md:px-16 md:pb-24 md:pr-28 lg:px-24 lg:pr-32">
+      <div className="relative z-10 flex h-full flex-col justify-between gap-3 px-6 pb-24 pt-20 md:gap-4 md:px-16 md:pb-32 md:pr-28 lg:px-24 lg:pr-32">
         <div ref={copy} className="md:max-w-[70%]">
           <h1
             className="giant text-[min(15.4vw,9.6svh,4.4rem)] md:text-[min(9.4vw,16svh,9.5rem)]"
@@ -102,7 +102,7 @@ export default function Hero() {
           {/* The "what next" cue: a bright, bobbing, pulsing pill at the bottom of the screen.
               Phones: in the flow under the tiles. Desktop: pinned bottom-centre, so the
               tiles keep their spot. The wrapper positions it; the button itself animates. */}
-          <div className="mt-3 flex justify-center md:absolute md:inset-x-0 md:bottom-5 md:mt-0">
+          <div className="mt-7 flex justify-center md:absolute md:inset-x-0 md:bottom-4 md:mt-0">
             <button type="button" onClick={() => scrollToId('awareness')} className="scroll-cue label">
               scroll to enter the funnel
               <span className="scroll-cue-arrow" aria-hidden="true">

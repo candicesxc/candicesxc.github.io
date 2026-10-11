@@ -29,7 +29,7 @@ export default function Contact() {
   // same spot, so they read as the first screen's tiles having fallen all the way down.
   return (
     <section id="contact" ref={root} className="screen relative">
-      <div className="flex h-full flex-col justify-between gap-4 px-6 pb-24 pt-20 md:px-16 md:pb-24 md:pr-28 lg:px-24 lg:pr-32">
+      <div className="flex h-full flex-col justify-between gap-4 px-6 pb-24 pt-20 md:px-16 md:pb-32 md:pr-28 lg:px-24 lg:pr-32">
         <div className="md:max-w-[70%]">
           <StagePill stage={stage} tight />
           <h2 className="giant text-[min(14.5vw,9svh,4rem)] md:text-[min(9.4vw,14svh,9.5rem)]">
