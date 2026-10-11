@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import MetricCounter from '../components/MetricCounter'
 import StagePill from '../components/StagePill'
 import { FUNNEL, PROFILE } from '../content'
 import { convert } from '../lib/lab'
 import { depth, sayHi } from '../lib/metrics'
+import useSeen from '../lib/useSeen'
 
 // Larger than the stage copy on phones, where this screen has room to spare.
 const stage = FUNNEL.find((s) => s.id === 'contact')
@@ -12,24 +13,19 @@ const para = 'font-display font-semibold leading-snug text-[min(6.4vw,3.2svh,1.7
 export default function Contact() {
   const root = useRef(null)
   // The stat tiles and link buttons wait off-stage until the section is on screen, then come in one by one.
-  const [seen, setSeen] = useState(false)
+  const seen = useSeen(root, 0.5)
   const links = [
     { label: 'linkedin', href: PROFILE.linkedin },
     { label: 'email', href: `mailto:${PROFILE.email}` },
     { label: 'github', href: PROFILE.github },
   ]
 
-  useEffect(() => {
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && setSeen(true), { threshold: 0.5 })
-    io.observe(root.current)
-    return () => io.disconnect()
-  }, [])
 
   // Laid out like the first screen: copy top-left, stat tiles bottom-left in the very
   // same spot, so they read as the first screen's tiles having fallen all the way down.
   return (
     <section id="contact" ref={root} className="screen relative">
-      <div className="flex h-full flex-col justify-between gap-4 px-6 pb-24 pt-20 md:px-16 md:pb-32 md:pr-28 lg:px-24 lg:pr-32">
+      <div className="flex h-full flex-col justify-between gap-4 px-6 pb-[var(--bar-space)] pt-20 md:px-16 md:pb-32 md:pr-28 lg:px-24 lg:pr-32">
         <div className="md:max-w-[70%]">
           <StagePill stage={stage} tight />
           <h2 className="giant text-[min(14.5vw,9svh,4rem)] md:text-[min(9.4vw,14svh,9.5rem)]">

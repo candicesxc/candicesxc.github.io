@@ -11,6 +11,9 @@
   --pop: #c1121f;
   --map-hover: #f4a261;
   --heat-blend: multiply;
+  /* Room kept clear at the bottom of every screen on phones for the fixed progress bar.
+     The bar grows by the phone's home-indicator inset, so this must grow with it. */
+  --bar-space: calc(6.75rem + env(safe-area-inset-bottom, 0px));
 }
 
 :root[data-variant='b'] {

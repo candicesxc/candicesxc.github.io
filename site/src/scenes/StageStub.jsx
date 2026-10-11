@@ -5,7 +5,7 @@ export default function StageStub({ stage }) {
   return (
     <section
       id={stage.id}
-      className="screen relative flex flex-col justify-center px-6 pb-24 pt-20 md:px-16 md:pb-20 md:pr-28 lg:px-24 lg:pr-32"
+      className="screen relative flex flex-col justify-center px-6 pb-[var(--bar-space)] pt-20 md:px-16 md:pb-20 md:pr-28 lg:px-24 lg:pr-32"
     >
       <StagePill stage={stage} />
       <p className="max-w-6xl shrink-0 font-display text-[min(1.3rem,2.6svh)] font-semibold leading-snug md:text-[min(1.9rem,3.4svh)] md:leading-snug">{stage.line}</p>

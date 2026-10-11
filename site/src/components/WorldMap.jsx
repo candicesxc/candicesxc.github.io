@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import map from '../data/world-map.json'
 import { burst } from '../lib/lab'
 import Lightbox from './Lightbox'
+import useSeen from '../lib/useSeen'
 
 const PHOTO_R = 13
 const byId = Object.fromEntries(map.pins.filter((p) => p.id).map((p) => [p.id, p]))
@@ -12,15 +13,10 @@ const byId = Object.fromEntries(map.pins.filter((p) => p.id).map((p) => [p.id, p
 export default function WorldMap({ className = '' }) {
   const pan = useRef(null)
   const box = useRef(null)
-  const [lit, setLit] = useState(false)
+  const lit = useSeen(box, 0.4)
   const [tip, setTip] = useState(null)
   const [open, setOpen] = useState(null)
 
-  useEffect(() => {
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && setLit(true), { threshold: 0.4 })
-    io.observe(box.current)
-    return () => io.disconnect()
-  }, [])
 
   // Phones: open the sideways pan on the middle of the map. The map's width depends on
   // the space it is given, which can settle after first paint (fonts, the browser's

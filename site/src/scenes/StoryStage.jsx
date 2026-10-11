@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import BrowserFrame from '../components/BrowserFrame'
 import FlipCard from '../components/FlipCard'
 import PhotoBar from '../components/PhotoBar'
 import StagePill from '../components/StagePill'
 import WorldMap from '../components/WorldMap'
+import useSeen from '../lib/useSeen'
 
 // Turns "a **key fact** and a [link](https://…)" into text with the fact in red and a real link.
 function Marked({ text }) {
@@ -45,12 +46,7 @@ export default function StoryStage({ stage }) {
   // The sentences fade up once, one after another, when the stage first comes on screen,
   // and always finish fully solid. (A scroll-linked fade can't be used here: each stage is
   // exactly one screen, so the lower lines would never scroll far enough to finish.)
-  const [seen, setSeen] = useState(false)
-  useEffect(() => {
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && setSeen(true), { threshold: 0.35 })
-    io.observe(root.current)
-    return () => io.disconnect()
-  }, [])
+  const seen = useSeen(root, 0.35)
 
   const copy = (
     <div
@@ -75,7 +71,7 @@ export default function StoryStage({ stage }) {
     <section
       id={stage.id}
       ref={root}
-      className={`screen relative flex flex-col justify-center px-6 pb-24 pt-20 md:px-16 md:pr-28 lg:px-24 lg:pr-32 ${
+      className={`screen relative flex flex-col justify-center px-6 pb-[var(--bar-space)] pt-20 md:px-16 md:pr-28 lg:px-24 lg:pr-32 ${
         stage.map ? 'md:pb-6' : 'md:pb-20'
       }`}
     >

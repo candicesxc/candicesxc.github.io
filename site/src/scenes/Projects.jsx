@@ -14,7 +14,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="screen relative flex flex-col justify-center px-6 pb-24 pt-20 md:px-16 md:pb-20 md:pr-28 lg:px-24 lg:pr-32"
+      className="screen relative flex flex-col justify-center px-6 pb-[var(--bar-space)] pt-20 md:px-16 md:pb-20 md:pr-28 lg:px-24 lg:pr-32"
     >
       <StagePill stage={stage} tight />
       <h2 className="giant shrink-0 text-[min(11vw,9svh,6rem)]">Side projects</h2>

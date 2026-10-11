@@ -63,7 +63,7 @@ export default function Hero() {
 
   return (
     <section id="top" ref={root} className="screen relative">
-      <div className="relative z-10 flex h-full flex-col justify-between gap-3 px-6 pb-24 pt-20 md:gap-4 md:px-16 md:pb-32 md:pr-28 lg:px-24 lg:pr-32">
+      <div className="relative z-10 flex h-full flex-col justify-between gap-3 px-6 pb-[var(--bar-space)] pt-20 md:gap-4 md:px-16 md:pb-32 md:pr-28 lg:px-24 lg:pr-32">
         <div ref={copy} className="md:max-w-[70%]">
           <h1
             className="giant text-[min(15.4vw,9.6svh,4.4rem)] md:text-[min(9.4vw,16svh,9.5rem)]"
