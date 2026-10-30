@@ -104,7 +104,7 @@ export default function WorldMap({ className = '' }) {
               key={c.id + c.name}
               d={c.d}
               className={`map-land ${c.on ? 'map-on' : ''} ${c.on && lit ? 'is-lit' : ''}`}
-              style={c.on ? { transitionDelay: `${order++ * 70}ms` } : undefined}
+              style={c.on ? { transitionDelay: `${order++ * 35}ms` } : undefined}
               {...(pin && { onPointerEnter: () => show(pin), onClick: poke(pin) })}
             />
           )
@@ -114,7 +114,7 @@ export default function WorldMap({ className = '' }) {
           <g
             key={p.name}
             className={`map-pin ${lit ? 'is-lit' : ''}`}
-            style={{ transitionDelay: `${400 + i * 60}ms` }}
+            style={{ transitionDelay: `${300 + i * 30}ms` }}
             onPointerEnter={() => show(p)}
             onClick={poke(p)}
           >
@@ -131,13 +131,20 @@ export default function WorldMap({ className = '' }) {
             <g
               key={p.name}
               className={`map-pin map-photo ${lit ? 'is-lit' : ''}`}
-              style={{ transitionDelay: `${1400 + i * 90}ms` }}
+              style={{ transitionDelay: `${700 + i * 45}ms` }}
               role="button"
               tabIndex={0}
               aria-label={`Open photo: ${p.name}`}
               onPointerEnter={() => show(p, `photo:${p.name}`)}
+              onFocus={() => show(p, `photo:${p.name}`)}
+              onBlur={hide}
               onClick={() => setOpen(p)}
-              onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setOpen(p)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setOpen(p)
+                }
+              }}
             >
               <line x1={p.xy[0]} y1={p.xy[1]} x2={cx} y2={cy} className="map-line" />
               <circle cx={p.xy[0]} cy={p.xy[1]} r="3.2" className="map-anchor" />
@@ -159,14 +166,14 @@ export default function WorldMap({ className = '' }) {
 
       {tip && (
         <div
-          className="label pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-full border-[1.5px] border-ink bg-card px-3 py-1.5 font-medium shadow-[2px_2px_0_var(--ink)]"
+          className="label pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-full border-[1.5px] border-ink bg-card px-3 py-1.5 font-medium shadow-[var(--shadow-sm)]"
           style={{ left: tip.x, top: tip.y - 8 }}
         >
           {tip.pin.name}
         </div>
       )}
 
-      {open && <Lightbox src={open.full} alt={`Candice in ${open.name}`} onClose={() => setOpen(null)} />}
+      {open && <Lightbox src={open.full} alt={`Candice in ${open.name}`} caption={open.name} onClose={() => setOpen(null)} />}
       </div>
     </div>
   )

@@ -3,67 +3,50 @@ import { FUNNEL, PROJECTS } from '../content'
 import ProjectModal from '../components/ProjectModal'
 import StagePill from '../components/StagePill'
 
-const TILTS = [-1.5, 1, -0.75]
-const stop = (e) => e.stopPropagation()
 const stage = FUNNEL.find((s) => s.id === 'projects')
 
-// Side projects. Clicking a card opens its full description; the two buttons go straight out.
+// Side projects. Each card has three clear exits: try the thing, read its code, or read more
+// here. Clicking the rest of the card also reads more; the "read more" button is what
+// keyboards and screen readers use, and it gets focus back when the pop-up closes.
 export default function Projects() {
   const [open, setOpen] = useState(null)
 
-  return (
-    <section
-      id="projects"
-      className="screen relative flex flex-col justify-center px-6 pb-[var(--bar-space)] pt-20 md:px-16 md:pb-20 md:pr-28 lg:px-24 lg:pr-32"
-    >
-      <StagePill stage={stage} tight />
-      <h2 className="giant shrink-0 text-[min(11vw,9svh,6rem)]">Side projects</h2>
+  const cardClick = (e, p) => {
+    if (e.target.closest('a, button')) return
+    e.currentTarget.querySelector('[data-more]').focus({ preventScroll: true })
+    setOpen(p)
+  }
 
-      <div className="photo-strip -mx-6 mt-[3svh] flex max-h-[580px] min-h-0 flex-1 snap-x gap-4 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0">
-        {PROJECTS.map((p, i) => (
-          <article
-            key={p.title}
-            role="button"
-            tabIndex={0}
-            aria-label={`${p.title}: read more`}
-            onClick={() => setOpen(p)}
-            onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && e.target === e.currentTarget && setOpen(p)}
-            className="panel flex h-full w-[78vw] shrink-0 cursor-pointer snap-center flex-col overflow-hidden transition-transform duration-300 md:w-auto md:[transform:rotate(var(--tilt))] md:hover:[transform:rotate(0deg)_translateY(-4px)]"
-            style={{ '--tilt': `${TILTS[i % TILTS.length]}deg` }}
-          >
-            <div className="min-h-0 flex-1 border-b-[1.5px] border-ink" style={{ background: p.imageBg }}>
+  return (
+    <section id="projects" className="screen chapter justify-center">
+      <StagePill stage={stage} />
+      <h2 className="giant title shrink-0">Side projects</h2>
+
+      <div className="mt-[clamp(1rem,3svh,2rem)] grid gap-5 md:grid-cols-3 md:gap-6">
+        {PROJECTS.map((p) => (
+          <article key={p.title} onClick={(e) => cardClick(e, p)} className="panel group flex cursor-pointer flex-col overflow-hidden">
+            <div className="aspect-[16/10] shrink-0 overflow-hidden border-b-[1.5px] border-ink md:aspect-auto md:h-[min(30svh,22rem)]" style={{ background: p.imageBg }}>
               <img
                 src={p.image}
                 alt=""
                 loading="lazy"
-                className={`h-full w-full ${p.contain ? `object-contain ${p.contain}` : 'object-cover'}`}
+                className={`h-full w-full transition-transform duration-[260ms] group-hover:scale-[1.02] ${p.contain ? `object-contain ${p.contain}` : p.imageBg ? 'object-contain' : 'object-cover'}`}
+                style={{ objectPosition: p.focus }}
               />
             </div>
-            <div className="flex shrink-0 flex-col gap-2 p-4">
+            <div className="flex flex-1 flex-col p-4 md:p-5">
               <h3 className="font-display text-2xl font-bold leading-tight">{p.title}</h3>
-              <p className="leading-snug text-muted">{p.line}</p>
-              <div className="label flex items-center gap-2 pt-1">
-                <a
-                  href={p.live}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={stop}
-                  className="flex min-h-[40px] items-center whitespace-nowrap rounded-full border-[1.5px] border-ink bg-pop px-3 font-medium text-bg"
-                >
+              <p className="mt-1.5 flex-1 text-[1.0625rem] leading-snug text-muted">{p.line}</p>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <a href={p.live} target="_blank" rel="noopener noreferrer" aria-label={`Try ${p.title}`} className="btn btn-primary !px-3.5">
                   try it ↗
                 </a>
-                <a
-                  href={p.repo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={stop}
-                  className="flex min-h-[40px] items-center whitespace-nowrap rounded-full border-[1.5px] border-ink px-3"
-                >
+                <a href={p.repo} target="_blank" rel="noopener noreferrer" aria-label={`View the code for ${p.title}`} className="btn !px-3.5">
                   code ↗
                 </a>
-                <span className="ml-auto whitespace-nowrap text-muted" aria-hidden="true">
-                  more +
-                </span>
+                <button type="button" data-more onClick={() => setOpen(p)} aria-label={`Read more about ${p.title}`} className="btn-text ml-auto">
+                  read more
+                </button>
               </div>
             </div>
           </article>

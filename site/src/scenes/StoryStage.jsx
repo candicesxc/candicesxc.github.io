@@ -3,6 +3,7 @@ import BrowserFrame from '../components/BrowserFrame'
 import FlipCard from '../components/FlipCard'
 import PhotoBar from '../components/PhotoBar'
 import StagePill from '../components/StagePill'
+import WorkExample from '../components/WorkExample'
 import WorldMap from '../components/WorldMap'
 import useSeen from '../lib/useSeen'
 
@@ -11,7 +12,7 @@ function Marked({ text }) {
   return text.split(/(\*\*.+?\*\*|\[.+?\]\(.+?\))/).map((part, i) => {
     if (part.startsWith('**')) {
       return (
-        <span key={i} className="text-pop">
+        <span key={i} className="mark">
           {part.slice(2, -2)}
         </span>
       )
@@ -19,13 +20,7 @@ function Marked({ text }) {
     const link = part.match(/^\[(.+?)\]\((.+?)\)$/)
     if (link) {
       return (
-        <a
-          key={i}
-          href={link[2]}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-pop underline decoration-2 underline-offset-4"
-        >
+        <a key={i} href={link[2]} target="_blank" rel="noopener noreferrer" className="ink-link">
           {link[1]}
         </a>
       )
@@ -34,33 +29,20 @@ function Marked({ text }) {
   })
 }
 
-// A funnel stage told as a few sentences plus either a sideways strip of images or a flip card.
+// A funnel stage: the same label and text start on every chapter, then a strip of images,
+// a map, or an image beside the text.
 export default function StoryStage({ stage }) {
   const root = useRef(null)
-  // Same type size on every stage; longer copy only steps down on phones, where height is tight.
-  const dense = stage.lines.join(' ').length > 240
-  const size = dense
-    ? 'text-[min(1.3rem,2.4svh)] md:text-[min(1.9rem,3.4svh)] [@media(max-height:740px)]:text-[2.35svh] md:[@media(max-height:740px)]:text-[3.2svh]'
-    : 'text-[min(1.3rem,2.6svh)] md:text-[min(1.9rem,3.4svh)]'
+  const split = stage.flip || stage.browser
 
   // The sentences fade up once, one after another, when the stage first comes on screen,
-  // and always finish fully solid. (A scroll-linked fade can't be used here: each stage is
-  // exactly one screen, so the lower lines would never scroll far enough to finish.)
-  const seen = useSeen(root, 0.35)
+  // and always finish fully solid.
+  const seen = useSeen(root, 0.2)
 
   const copy = (
-    <div
-      className={`shrink-0 ${stage.browser ? 'max-w-[36rem]' : 'max-w-6xl'} ${
-        stage.barMax || stage.flip || stage.browser ? 'space-y-[1.8svh]' : 'space-y-[1svh]'
-      }`}
-    >
+    <div className={`story shrink-0 ${split ? 'story-side' : ''}`}>
       {stage.lines.map((line, i) => (
-        <p
-          key={line}
-          data-line
-          className={`stage-line font-display font-semibold leading-snug ${size} ${seen ? 'is-seen' : ''}`}
-          style={{ transitionDelay: `${i * 140}ms` }}
-        >
+        <p key={line} data-line className={`stage-line ${seen ? 'is-seen' : ''}`} style={{ transitionDelay: `${i * 90}ms` }}>
           <Marked text={line} />
         </p>
       ))}
@@ -68,41 +50,32 @@ export default function StoryStage({ stage }) {
   )
 
   return (
-    <section
-      id={stage.id}
-      ref={root}
-      className={`screen relative flex flex-col justify-center px-6 pb-[var(--bar-space)] pt-20 md:px-16 md:pr-28 lg:px-24 lg:pr-32 ${
-        stage.map ? 'md:pb-6' : 'md:pb-20'
-      }`}
-    >
-      {stage.flip || stage.browser ? (
-        // Copy on the left, flip card or browser window on the right; stacked on phones.
-        <div
-          className={`flex min-h-0 flex-1 flex-col md:flex-none md:flex-row md:items-center md:gap-12 lg:gap-20 ${
-            // Phones: the same generous gap between the copy and the image on every stage.
-            'gap-[5.5svh]'
-          }`}
-        >
-          <div className="shrink-0 md:min-w-0 md:flex-1">
+    <section id={stage.id} ref={root} className="screen chapter justify-center">
+      {split ? (
+        // Label and copy on the left, flip card or browser window on the right, all starting
+        // on the same line as every other chapter's label. Stacked on phones.
+        <div className="chapter-split">
+          <div className="min-w-0 md:flex-1">
             <StagePill stage={stage} />
             {copy}
+            {stage.work && <WorkExample work={stage.work} />}
           </div>
           {stage.flip ? (
-            <FlipCard front={stage.flip.front} back={stage.flip.back} className="flex-1 md:flex-none" />
+            <FlipCard front={stage.flip.front} back={stage.flip.back} />
           ) : (
-            <BrowserFrame {...stage.browser} className="browser-side flex-1 md:aspect-[4/3] md:flex-none">
-              <div className="relative flex h-full items-center justify-center bg-white p-3">
+            <BrowserFrame {...stage.browser} className="browser-side">
+              <div className="relative flex h-full items-end justify-center bg-white p-4">
                 {/* Faded snapshot of the page behind the button */}
                 <img
                   src={stage.browser.shot}
                   alt=""
-                  className="absolute inset-0 h-full w-full object-cover object-top opacity-30"
+                  className="absolute inset-0 h-full w-full object-cover object-top opacity-40"
                 />
                 <a
                   href={stage.browser.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="label relative flex min-h-[44px] items-center rounded-full border-[1.5px] border-[#0c0a08] bg-[#e4f222] px-5 font-medium text-[#0c0a08] shadow-[3px_3px_0_#0c0a08]"
+                  className="btn relative !border-[#0c0a08] !bg-[#e4f222] !text-[#0c0a08] [--shadow:#0c0a08]"
                 >
                   open {stage.browser.address} ↗
                 </a>
@@ -112,21 +85,18 @@ export default function StoryStage({ stage }) {
         </div>
       ) : (
         <>
-          <StagePill stage={stage} tight={stage.map} />
+          <StagePill stage={stage} />
           {copy}
-          {stage.photos && <PhotoBar
-            photos={stage.photos}
-            from={stage.bar?.[0]}
-            to={stage.bar?.[1]}
-            maxHeight={stage.barMax}
-            fitDesktop={stage.fitDesktop}
-            zoom={stage.zoom}
-          />}
+          {stage.photos && <PhotoBar photos={stage.photos} from={stage.bar?.[0]} to={stage.bar?.[1]} samples={stage.samples} />}
           {stage.map && (
-            // The map gets every spare pixel. On phones it runs edge to edge and pans sideways.
+            // The map gets the spare room. On phones it runs edge to edge and pans sideways.
             <>
-              <WorldMap className="-mx-6 mt-[4.5svh] min-h-0 flex-1 md:mx-0 md:mt-[1.5svh] md:max-h-[720px]" />
-              <p className="label mt-2 shrink-0 text-center text-muted md:hidden">← swipe the map →</p>
+              <WorldMap className="-mx-[var(--gutter)] mt-[clamp(1rem,3svh,2rem)] h-[min(56svh,420px)] shrink-0 md:mx-0 md:h-[clamp(16rem,calc(100svh-25.5rem),800px)]" />
+              <p className="label mt-2 shrink-0 text-center text-muted">
+                <span className="md:hidden">swipe the map · </span>
+                <span className="hidden md:inline">click </span>
+                <span className="md:hidden">tap </span>a photo to open it
+              </p>
             </>
           )}
         </>

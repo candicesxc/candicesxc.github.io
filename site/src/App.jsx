@@ -46,6 +46,7 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.dataset.variant = variant
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', variant === 'b' ? '#003049' : '#fdf0d5')
     try {
       localStorage.setItem(KEY, variant)
     } catch {}
@@ -59,16 +60,12 @@ export default function App() {
       <Loader />
       <HeatTrail />
 
-      <header className="fixed inset-x-0 top-0 z-30 flex items-center justify-between bg-bg/85 px-6 py-2 backdrop-blur md:px-16 lg:px-24">
+      <header className="fixed inset-x-0 top-0 z-30 flex h-[var(--header-h)] items-center justify-between bg-bg pl-[var(--gutter)] pr-[var(--gutter)] md:pr-5">
         <Logo />
         <nav aria-label="Site" className="flex items-center gap-2 md:gap-3">
-          <button
-            type="button"
-            onClick={() => scrollToId('projects')}
-            className="label group flex h-10 items-center gap-1.5 rounded-full border-[1.5px] border-ink bg-card px-2.5 font-medium shadow-[2px_2px_0_var(--ink)] transition-all hover:-translate-y-0.5 hover:bg-pop hover:text-bg hover:shadow-[3px_4px_0_var(--ink)] active:translate-y-0 active:shadow-none md:px-4"
-          >
+          <button type="button" onClick={() => scrollToId('projects')} className="btn group max-sm:!px-3">
             projects
-            <span aria-hidden="true" className="hidden transition-transform group-hover:translate-y-0.5 sm:inline">
+            <span aria-hidden="true" className="hidden transition-transform duration-[140ms] group-hover:translate-y-0.5 sm:inline">
               ↓
             </span>
           </button>

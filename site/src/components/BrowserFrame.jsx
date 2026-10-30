@@ -3,7 +3,7 @@
 export default function BrowserFrame({ title, icon, address, href, children, className = '' }) {
   return (
     <div
-      className={`flex min-h-0 flex-col overflow-hidden rounded-[18px] border-[1.5px] border-ink bg-[#dee1e6] shadow-[5px_5px_0_var(--ink)] ${className}`}
+      className={`flex min-h-0 flex-col overflow-hidden rounded-[var(--r)] border-[1.5px] border-ink bg-[#dee1e6] shadow-[var(--shadow-lg)] ${className}`}
     >
       <div className="flex shrink-0 items-end gap-2 px-3 pt-2">
         <div className="flex gap-1.5 pb-2.5" aria-hidden="true">
@@ -11,7 +11,7 @@ export default function BrowserFrame({ title, icon, address, href, children, cla
           <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
           <span className="h-3 w-3 rounded-full bg-[#28c840]" />
         </div>
-        <div className="flex min-w-0 max-w-[200px] items-center gap-2 rounded-t-[10px] bg-white px-3 py-1.5 text-[13px] text-[#202124] [font-family:system-ui,sans-serif]">
+        <div className="flex min-w-0 max-w-[200px] items-center gap-2 rounded-t-[var(--r-sm)] bg-white px-3 py-1.5 text-[13px] text-[#202124] [font-family:system-ui,sans-serif]">
           {icon && <img src={icon} alt="" className="h-3.5 w-3.5 shrink-0 object-contain" />}
           <span className="truncate">{title}</span>
           <span className="ml-2 text-[#5f6368]" aria-hidden="true">

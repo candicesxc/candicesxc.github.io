@@ -34,72 +34,115 @@ export function initScroll() {
   }
 }
 
-// One gesture, one page. Any real scroll (a swipe, a turn of the wheel, a trackpad
-// flick, the arrow/page/space keys) moves exactly one screen in that direction, however
-// small it was. CSS snap alone would spring back from anything under half a screen.
-// Left alone: sideways gestures (photo strips, the map), taps, and open pop-ups.
+// Glides to a chapter and reports when it has landed. Everything that moves the page goes
+// through here, so a wheel turn can never start on top of a scroll already under way.
+let gliding = false
+let finishGlide = null
+
+function glide(el, block = 'start') {
+  finishGlide?.()
+  gliding = true
+  const finish = () => {
+    gliding = false
+    finishGlide = null
+    clearTimeout(cap)
+    window.removeEventListener('scrollend', finish)
+  }
+  // `scrollend` is the real signal; the timer covers browsers without it.
+  const cap = setTimeout(finish, 1100)
+  finishGlide = finish
+  window.addEventListener('scrollend', finish)
+  el.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block })
+}
+
+// One gesture, one page, on wide screens: a turn of the wheel, a trackpad flick or the
+// arrow/page/space keys move one chapter, however small the gesture was. A chapter taller
+// than the window scrolls normally until its edge, then turns. Phones scroll natively,
+// because their chapters grow with their content. Open pop-ups are left alone.
+const PAGED = '(min-width: 768px)'
+
 function initPaging() {
   const screens = () => [...document.querySelectorAll('.screen')]
-  const nearest = (list) => {
-    let best = 0
-    list.forEach((el, i) => {
-      if (Math.abs(el.offsetTop - window.scrollY) < Math.abs(list[best].offsetTop - window.scrollY)) best = i
+  // The chapter under the middle of the window.
+  const currentIndex = (list) => {
+    const mid = window.innerHeight / 2
+    const i = list.findIndex((el) => {
+      const r = el.getBoundingClientRect()
+      return r.top <= mid && r.bottom > mid
     })
-    return best
+    return Math.max(0, i)
   }
-  const popupOpen = () => Boolean(document.querySelector('[aria-modal="true"]'))
+  const skip = (e) => e.altKey || e.ctrlKey || e.metaKey || document.querySelector('[aria-modal="true"]') || !window.matchMedia(PAGED).matches
+  const tooTall = (el) => el.offsetHeight > window.innerHeight + 2
+  // True while a tall chapter still has its own content to scroll through in that direction.
+  const insideTall = (el, dir) => {
+    if (!tooTall(el)) return false
+    const r = el.getBoundingClientRect()
+    return dir > 0 ? r.bottom > window.innerHeight + 2 : r.top < -2
+  }
 
-  let lockedUntil = 0
-  const turn = (dir, from) => {
+  const turn = (dir) => {
     const list = screens()
-    const index = Math.min(list.length - 1, Math.max(0, (from ?? nearest(list)) + dir))
-    const target = list[index]
-    const go = () => target.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth' })
-    lockedUntil = performance.now() + 850
-    requestAnimationFrame(go)
-    // The browser's own momentum can win the first round; make sure we still arrive.
-    setTimeout(() => {
-      if (list[nearest(list)] !== target) go()
-    }, 420)
+    const from = currentIndex(list)
+    const target = list[Math.min(list.length - 1, Math.max(0, from + dir))]
+    if (target === list[from]) return
+    // Coming back up into a tall chapter lands on its end, where the visitor left it.
+    glide(target, dir < 0 && tooTall(target) ? 'end' : 'start')
   }
 
-  // Touch: decide on finger lift, from the screen the swipe started on.
-  const MIN_SWIPE = 28
-  let start = null
-  const onTouchStart = (e) => {
-    const t = e.touches[0]
-    start = e.touches.length === 1 ? { x: t.clientX, y: t.clientY, index: nearest(screens()) } : null
-  }
-  const onTouchEnd = (e) => {
-    if (!start || popupOpen()) return
-    const t = e.changedTouches[0]
-    const dy = start.y - t.clientY
-    const dx = start.x - t.clientX
-    const from = start.index
-    start = null
-    if (Math.abs(dy) < MIN_SWIPE || Math.abs(dx) > Math.abs(dy)) return
-    turn(Math.sign(dy), from)
-  }
-
-  // Wheel and trackpad: take over vertical scrolling. A page turn locks out the rest of
-  // the same gesture (trackpads keep sending fading "momentum" events for a second or so).
+  // Wheel and trackpad. A trackpad flick swells while the finger moves, then sends fading
+  // "momentum" events for two seconds or more, so one gesture must only ever turn one page.
+  // Nothing during a glide counts for anything. After landing, a new gesture shows itself in
+  // one of two ways: the events stop for a moment, or a faded tail suddenly surges again.
+  // A pause followed by a slightly smaller event is only the browser stalling mid-fade.
+  const NEW_GESTURE_GAP = 250
+  let armed = true
+  let leftover = false // Still feeling the gesture that made the last turn
   let lastWheel = 0
+  let lastSize = 0
+  let tail = Infinity // Smallest event since the last landing
   const onWheel = (e) => {
-    if (e.ctrlKey || popupOpen()) return
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
-    e.preventDefault()
+    if (skip(e) || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
     const now = performance.now()
-    const fresh = now - lastWheel > 160
+    const gap = now - lastWheel
+    const size = Math.abs(e.deltaY)
+    const stalledFade = gap < 1000 && size < lastSize && size >= lastSize * 0.5
     lastWheel = now
-    if (now < lockedUntil) return
-    // Right after a turn, only a new gesture or a firm push counts, not leftover momentum.
-    if (!fresh && Math.abs(e.deltaY) < 18) return
-    if (Math.abs(e.deltaY) < 3) return
-    turn(Math.sign(e.deltaY))
+    lastSize = size
+    e.preventDefault()
+    if (gliding) {
+      armed = false
+      tail = Infinity
+      return
+    }
+    tail = Math.min(tail, size)
+    if ((gap > NEW_GESTURE_GAP && !stalledFade) || (size >= 12 && size >= tail * 4)) {
+      armed = true
+      leftover = false
+      tail = size
+    }
+    const dir = Math.sign(e.deltaY)
+    if (!dir) return
+    const list = screens()
+    const here = list[currentIndex(list)]
+    if (leftover) return
+    if (insideTall(here, dir)) {
+      // A tall chapter scrolls by hand, stopping exactly at its edge. The next chapter
+      // takes a fresh gesture, so a single flick can't run on through it.
+      armed = false
+      const r = here.getBoundingClientRect()
+      const room = dir > 0 ? r.bottom - window.innerHeight : -r.top
+      window.scrollBy({ top: dir * Math.min(size, room), behavior: 'instant' })
+      return
+    }
+    if (!armed || size < 3) return
+    armed = false
+    leftover = true
+    turn(dir)
   }
 
   const onKey = (e) => {
-    if (popupOpen() || e.altKey || e.ctrlKey || e.metaKey) return
+    if (skip(e)) return
     const tag = e.target.tagName
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
     const onControl = tag === 'BUTTON' || tag === 'A' || e.target.getAttribute?.('role') === 'button'
@@ -108,22 +151,22 @@ function initPaging() {
     else if (e.key === 'ArrowUp' || e.key === 'PageUp') dir = -1
     else if (e.key === ' ' && !onControl) dir = e.shiftKey ? -1 : 1
     if (!dir) return
+    if (gliding) return e.preventDefault()
+    const list = screens()
+    if (insideTall(list[currentIndex(list)], dir)) return
     e.preventDefault()
-    if (performance.now() >= lockedUntil) turn(dir)
+    turn(dir)
   }
 
-  window.addEventListener('touchstart', onTouchStart, { passive: true })
-  window.addEventListener('touchend', onTouchEnd, { passive: true })
   window.addEventListener('wheel', onWheel, { passive: false })
   window.addEventListener('keydown', onKey)
   return () => {
-    window.removeEventListener('touchstart', onTouchStart)
-    window.removeEventListener('touchend', onTouchEnd)
     window.removeEventListener('wheel', onWheel)
     window.removeEventListener('keydown', onKey)
   }
 }
 
 export function scrollToId(id) {
-  document.getElementById(id)?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth' })
+  const el = document.getElementById(id)
+  if (el) glide(el)
 }
