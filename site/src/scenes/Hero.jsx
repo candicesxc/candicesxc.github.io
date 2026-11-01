@@ -13,7 +13,7 @@ function Letters({ text, className = '', popUntil = 0 }) {
   return (
     <span className={`block whitespace-nowrap ${className}`} aria-hidden="true">
       {[...text].map((ch, i) => (
-        <span key={i} data-letter className={`inline-block will-change-transform ${i < popUntil ? 'text-pop' : ''}`}>
+        <span key={i} data-letter className={`inline-block will-change-transform ${i < popUntil ? 'giant-3d-pop' : ''}`}>
           {ch === ' ' ? ' ' : ch}
         </span>
       ))}
@@ -24,8 +24,7 @@ function Letters({ text, className = '', popUntil = 0 }) {
 export default function Hero() {
   const root = useRef(null)
   const copy = useRef(null)
-
-  useEffect(() => {
+    useEffect(() => {
     const mm = gsap.matchMedia()
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       // Scrolling tips the greeting into the funnel, letter by letter.
@@ -52,9 +51,9 @@ export default function Hero() {
       <FunnelCanvas avoid={copy} />
 
       <div className="chapter relative z-10 min-h-[100svh] justify-between gap-5 md:!pb-6">
-        <div ref={copy} className="md:max-w-[68%]">
+        <div ref={copy} className="md:my-auto md:max-w-[68%]">
           <h1
-            className="giant text-[min(15.4vw,4.4rem)] md:text-[min(9.4vw,16svh,9.5rem)]"
+            className="giant giant-3d text-[min(15.4vw,4.4rem)] md:text-[min(7.4vw,13svh,7.5rem)]"
             aria-label={`Hey! I'm ${PROFILE.first} ${PROFILE.last}.`}
           >
             <Letters text="Hey! I'm" popUntil={4} />
@@ -71,23 +70,20 @@ export default function Hero() {
             </a>
             .
           </p>
+          {/* The "what next" cue follows straight on from the intro */}
+          <button type="button" onClick={() => scrollToId('awareness')} className="btn btn-primary btn-lg scroll-cue mt-[clamp(1rem,3svh,1.75rem)] max-md:!px-4">
+            scroll to enter the funnel
+            <span className="scroll-cue-arrow" aria-hidden="true">
+              ↓
+            </span>
+          </button>
         </div>
 
         <div>
           <div className="grid grid-cols-3 gap-2 md:max-w-2xl md:gap-3 [@media(max-height:640px)]:hidden">
-            <MetricCounter label="scroll depth" format={depth} source="real" tilt={-1} />
-            <MetricCounter label="chance you say hi" format={sayHi} source="made up" flourish=", rising" tilt={0.75} />
-            <MetricCounter label="visitors still here" format={stillHere} source="made up" tilt={-0.5} />
-          </div>
-
-          {/* The "what next" cue, under the tiles */}
-          <div className="mt-4 flex justify-center md:mt-5 md:justify-start">
-            <button type="button" onClick={() => scrollToId('awareness')} className="btn btn-primary btn-lg scroll-cue">
-              scroll to enter the funnel
-              <span className="scroll-cue-arrow" aria-hidden="true">
-                ↓
-              </span>
-            </button>
+            <MetricCounter label="scroll depth" format={depth} source="live" flourish=" from this visit" tilt={-1} />
+            <MetricCounter label="chance you say hi" format={sayHi} source="optimistic forecast" tilt={0.75} />
+            <MetricCounter label="visitors still here" format={stillHere} source="unaudited estimate" tilt={-0.5} />
           </div>
         </div>
       </div>

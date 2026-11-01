@@ -132,14 +132,32 @@ body::before {
   letter-spacing: -0.02em;
 }
 
-/* The chapter headline: Side projects, Say hi */
+/* The big headlines (Hey, Side projects, Say hi): one crisp offset in a pale tint of the palette. The same idea
+   as the offset shadows on the buttons and cards, with no outline, blur or gradient. */
+.giant-3d {
+  --offset: #a9cbe0;
+  --offset-pop: #f4c9a0;
+  text-shadow: 0.04em 0.04em 0 var(--offset);
+}
+
+.giant-3d-pop {
+  color: var(--pop);
+  text-shadow: 0.04em 0.04em 0 var(--offset-pop);
+}
+
+:root[data-variant='b'] .giant-3d {
+  --offset: #2f6c91;
+  --offset-pop: #8f2b2b;
+}
+
+/* The chapter headline: Side projects, Say hi. A step below the first screen's. */
 .title {
   font-size: clamp(2.75rem, 13vw, 3.75rem);
 }
 
 @media (min-width: 768px) {
   .title {
-    font-size: min(8vw, 13svh, 7rem);
+    font-size: min(6vw, 10svh, 5.5rem);
   }
 }
 

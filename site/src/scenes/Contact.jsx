@@ -28,8 +28,8 @@ export default function Contact() {
       <FunnelCanvas avoid={copy} />
       <div ref={copy} className="relative z-10 w-fit max-w-full">
         <StagePill stage={stage} />
-        <h2 className="giant title">
-          Say <span className="text-pop">hi</span>
+        <h2 className="giant giant-3d title">
+          Say <span className="giant-3d-pop">hi</span>
         </h2>
         <div className="story mt-[clamp(0.75rem,2.5svh,1.5rem)]">
           <p>Please reach out if there's anything I could help, or you just wanted to chat.</p>
@@ -58,9 +58,9 @@ export default function Contact() {
       <div className="relative z-10">
         <div className="grid grid-cols-3 gap-2 md:max-w-2xl md:gap-3">
           {[
-            { label: 'scroll depth', format: depth, source: 'real', tilt: -1 },
-            { label: 'chance you say hi', format: sayHi, source: 'made up', flourish: ', love ya!', tilt: 0.75 },
-            { label: 'visitors still here', text: 'my bestie', source: 'not a metric', tilt: -0.5 },
+            { label: 'scroll depth', format: depth, source: 'live', flourish: ' from this visit', tilt: -1 },
+            { label: 'chance you say hi', format: sayHi, source: 'optimistic forecast', tilt: 0.75 },
+            { label: 'visitors still here', text: 'my bestie', source: 'unaudited', tilt: -0.5 },
           ].map((m, i) => (
             <div key={m.label} className={`stat-drop ${seen ? 'is-in' : ''}`} style={{ '--i': i }}>
               <MetricCounter {...m} className="h-full" />

@@ -20,7 +20,7 @@ export default function Projects() {
   return (
     <section id="projects" className="screen chapter justify-center">
       <StagePill stage={stage} />
-      <h2 className="giant title shrink-0">Side projects</h2>
+      <h2 className="giant giant-3d title shrink-0">Side projects</h2>
 
       <div className="mt-[clamp(1rem,3svh,2rem)] grid gap-5 md:grid-cols-3 md:gap-6">
         {PROJECTS.map((p) => (
