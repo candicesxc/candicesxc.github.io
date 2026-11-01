@@ -50,11 +50,6 @@ export default function ProjectModal({ project, onClose }) {
           )}
 
           <div className="p-5 md:p-8">
-            {project.award && (
-              <p className="label mb-3 w-fit rounded-full bg-[#f4a261] px-3 py-1.5 font-medium text-[#003049]">
-                ★ {project.award}
-              </p>
-            )}
             <h3 className="font-display text-3xl font-bold leading-tight md:text-4xl">{project.title}</h3>
             <p className="mt-3 text-lg font-medium leading-snug md:text-xl">{project.idea}</p>
 

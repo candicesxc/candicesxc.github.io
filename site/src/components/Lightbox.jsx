@@ -39,8 +39,14 @@ export default function Lightbox({ src, alt, caption, sample, onClose }) {
                 <Fact label={sample.resultLabel}>{sample.result}</Fact>
               </dl>
             </div>
-            <div className="min-w-0 flex-1 overflow-y-auto border-t-[1.5px] border-ink bg-white md:border-r-[1.5px] md:border-t-0" tabIndex={0} aria-label="Scroll the full piece">
-              <img src={src} alt={alt} className="h-auto w-full" />
+            {/* The piece sits centred on its own matte; a tall one scrolls from the top */}
+            <div
+              className="flex min-w-0 flex-1 overflow-y-auto border-t-[1.5px] border-ink md:border-r-[1.5px] md:border-t-0"
+              style={{ background: sample.matte || '#fff' }}
+              tabIndex={0}
+              aria-label="Scroll the full piece"
+            >
+              <img src={src} alt={alt} className="my-auto h-auto w-full" />
             </div>
           </article>
         ) : (
