@@ -82,11 +82,31 @@
 }
 
 html {
-  /* No CSS scroll-snap: it drags tall chapters back to their start and fights the page turns
-     in lib/scroll.js, which give desktop its paged feel. Phones scroll freely. */
+  /* Wide screens page with lib/scroll.js alone; CSS snap fights the wheel handling there. */
   background: var(--bg);
   /* No elastic bounce past the first and last chapters */
   overscroll-behavior-y: none;
+}
+
+/* Touch screens: the page settles on a chapter and a fling can't skip one. A chapter taller
+   than the screen still scrolls freely inside. */
+@media (pointer: coarse) {
+  html {
+    scroll-snap-type: y mandatory;
+  }
+
+  .screen {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* Phone browsers hide their toolbar on scroll, which would stop the last chapter short of
+     the top without this. */
+  .page::after {
+    content: '';
+    display: block;
+    height: calc(100lvh - 100svh);
+  }
 }
 
 /* Each chapter fills at least one screen and grows when its content needs more. */

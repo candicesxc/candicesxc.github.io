@@ -55,10 +55,10 @@ function glide(el, block = 'start') {
   el.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block })
 }
 
-// One gesture, one page, on wide screens: a turn of the wheel, a trackpad flick or the
-// arrow/page/space keys move one chapter, however small the gesture was. A chapter taller
-// than the window scrolls normally until its edge, then turns. Phones scroll natively,
-// because their chapters grow with their content. Open pop-ups are left alone.
+// One gesture, one page: a swipe, a turn of the wheel, a trackpad flick or the arrow/page/space
+// keys move one chapter, however small the gesture was. A chapter taller than the window
+// scrolls normally until its edge, then turns. Sideways swipes (photo strips, the map) and
+// open pop-ups are left alone.
 const PAGED = '(min-width: 768px)'
 
 function initPaging() {
@@ -72,7 +72,8 @@ function initPaging() {
     })
     return Math.max(0, i)
   }
-  const skip = (e) => e.altKey || e.ctrlKey || e.metaKey || document.querySelector('[aria-modal="true"]') || !window.matchMedia(PAGED).matches
+  const popupOpen = () => document.querySelector('[aria-modal="true"]')
+  const skip = (e) => e.altKey || e.ctrlKey || e.metaKey || popupOpen() || !window.matchMedia(PAGED).matches
   const tooTall = (el) => el.offsetHeight > window.innerHeight + 2
   // True while a tall chapter still has its own content to scroll through in that direction.
   const insideTall = (el, dir) => {
@@ -141,6 +142,43 @@ function initPaging() {
     turn(dir)
   }
 
+  // Touch: decide on finger lift, from where the swipe began. A swipe that began with room left
+  // in a tall chapter is ordinary scrolling; one that began at its edge turns the page.
+  const MIN_SWIPE = 28
+  let swipe = null
+  const onTouchStart = (e) => {
+    const t = e.touches[0]
+    if (e.touches.length !== 1) {
+      swipe = null
+      return
+    }
+    const list = screens()
+    const here = list[currentIndex(list)]
+    swipe = { x: t.clientX, y: t.clientY, here, roomDown: insideTall(here, 1), roomUp: insideTall(here, -1) }
+  }
+  const onTouchEnd = (e) => {
+    if (!swipe || popupOpen()) return
+    const t = e.changedTouches[0]
+    const dy = swipe.y - t.clientY
+    const dx = swipe.x - t.clientX
+    const { here, roomDown, roomUp } = swipe
+    swipe = null
+    if (Math.abs(dy) < MIN_SWIPE || Math.abs(dx) > Math.abs(dy)) return
+    const dir = Math.sign(dy)
+    if (dir > 0 ? roomDown : roomUp) return
+    const list = screens()
+    const target = list[list.indexOf(here) + dir]
+    if (!target) return
+    const block = dir < 0 && tooTall(target) ? 'end' : 'start'
+    glide(target, block)
+    // The browser's own momentum can win the first round; make sure the turn still lands.
+    setTimeout(() => {
+      const r = target.getBoundingClientRect()
+      const landed = block === 'end' ? Math.abs(r.bottom - window.innerHeight) < 4 : Math.abs(r.top) < 4
+      if (!landed) glide(target, block)
+    }, 450)
+  }
+
   const onKey = (e) => {
     if (skip(e)) return
     const tag = e.target.tagName
@@ -160,7 +198,11 @@ function initPaging() {
 
   window.addEventListener('wheel', onWheel, { passive: false })
   window.addEventListener('keydown', onKey)
+  window.addEventListener('touchstart', onTouchStart, { passive: true })
+  window.addEventListener('touchend', onTouchEnd, { passive: true })
   return () => {
+    window.removeEventListener('touchstart', onTouchStart)
+    window.removeEventListener('touchend', onTouchEnd)
     window.removeEventListener('wheel', onWheel)
     window.removeEventListener('keydown', onKey)
   }
